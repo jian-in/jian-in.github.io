@@ -45,3 +45,7 @@ html[data-theme="dark"] .post-card:hover{box-shadow:0 12px 40px rgba(0,0,0,0.3)}
 /* Go to top arrow - smaller */
 .top-link svg {width: 28px !important; height: 28px !important; padding: 6px !important; background: var(--entry); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s}
 .top-link:hover svg {background: #6366f1; color: white; transform: translateY(-2px)}
+/* Go to top arrow - force small */
+a.top-link, a.top-link svg {width: 28px !important; height: 28px !important; padding: 6px !important; min-width: 28px !important; min-height: 28px !important}
+a.top-link {padding: 6px !important; bottom: 2rem !important}
+a.top-link svg {width: 18px !important; height: 18px !important}
