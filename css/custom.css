@@ -49,3 +49,6 @@ html[data-theme="dark"] .post-card:hover{box-shadow:0 12px 40px rgba(0,0,0,0.3)}
 a.top-link, a.top-link svg {width: 28px !important; height: 28px !important; padding: 6px !important; min-width: 28px !important; min-height: 28px !important}
 a.top-link {padding: 6px !important; bottom: 2rem !important}
 a.top-link svg {width: 18px !important; height: 18px !important}
+/* Hero Avatar */
+.hero-avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid rgba(99,102,241,0.3);box-shadow:0 8px 32px rgba(99,102,241,0.2);margin:0 auto 1.2rem;display:block;transition:transform .3s,box-shadow .3s;position:relative;z-index:1}
+.hero-avatar:hover{transform:scale(1.05);box-shadow:0 12px 40px rgba(99,102,241,0.3);border-color:#6366f1}
