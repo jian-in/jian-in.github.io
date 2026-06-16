@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Forgiving</title><link>https://forgiving.top/</link><description>Recent content on Forgiving</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 16 Jun 2026 12:00:00 +0800</lastBuildDate><atom:link href="https://forgiving.top/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World：我的第一篇博客</title><link>https://forgiving.top/posts/hello-world/</link><pubDate>Tue, 16 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/posts/hello-world/</guid><description>搭建个人博客的第一步</description></item><item><title>关于我</title><link>https://forgiving.top/about/</link><pubDate>Tue, 16 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/about/</guid><description>&lt;h2 id="-你好"&gt;👋 你好！&lt;/h2&gt;
-&lt;p&gt;我是 [你的名字]，一名热爱技术的在校学生。&lt;/p&gt;
-&lt;h2 id="-技能栈"&gt;🛠️ 技能栈&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Forgiving</title><link>https://forgiving.top/</link><description>Recent content on Forgiving</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 16 Jun 2026 12:00:00 +0800</lastBuildDate><atom:link href="https://forgiving.top/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World：我的第一篇博客</title><link>https://forgiving.top/posts/hello-world/</link><pubDate>Tue, 16 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/posts/hello-world/</guid><description>搭建个人博客的第一步</description></item><item><title>关于我</title><link>https://forgiving.top/about/</link><pubDate>Tue, 16 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/about/</guid><description>&lt;h2 id="你好"&gt;你好！&lt;/h2&gt;
+&lt;p&gt;System.Collections.Hashtable.desc&lt;/p&gt;
+&lt;h2 id="技术栈"&gt;技术栈&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;编程语言&lt;/strong&gt;: Python, JavaScript&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;工具&lt;/strong&gt;: PyCharm, VS Code, Git&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;兴趣&lt;/strong&gt;: AI, Web开发, 数据分析&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="-联系我"&gt;📫 联系我&lt;/h2&gt;
+&lt;h2 id="联系我"&gt;联系我&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;GitHub: &lt;a href="https://github.com/"&gt;你的GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;GitHub: &lt;a href="https://github.com/jian-in"&gt;jian-in&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Email: &lt;a href="mailto:your@email.com"&gt;your@email.com&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="-座右铭"&gt;💡 座右铭&lt;/h2&gt;
+&lt;h2 id="喜欢"&gt;喜欢&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;Stay hungry, stay foolish.&amp;rdquo; — Steve Jobs&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Stay hungry, stay foolish.&amp;rdquo; - Steve Jobs&lt;/p&gt;
 &lt;/blockquote&gt;</description></item><item><title>Python学习笔记：从零开始</title><link>https://forgiving.top/posts/python-basics/</link><pubDate>Mon, 15 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/posts/python-basics/</guid><description>Python入门基础，变量、条件判断、循环</description></item><item><title>用 Hugo 搭建个人博客的完整指南</title><link>https://forgiving.top/posts/hugo-setup/</link><pubDate>Sun, 14 Jun 2026 12:00:00 +0800</pubDate><guid>https://forgiving.top/posts/hugo-setup/</guid><description>从零开始用 Hugo 搭建一个静态博客</description></item></channel></rss>
