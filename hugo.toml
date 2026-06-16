@@ -1,0 +1,46 @@
+baseURL = 'https://forgiving.top/'
+languageCode = 'zh-cn'
+defaultContentLanguage = 'zh'
+title = 'Forgiving'
+theme = 'PaperMod'
+paginate = 10
+
+[params]
+  author = 'jian-in'
+  description = '记录学习与生活的个人博客'
+  defaultTheme = 'auto'
+  showShareButtons = true
+  showReadingTime = true
+  showPostNavLinks = true
+  showBreadCrumbs = true
+  showCodeCopyButtons = true
+  showToc = true
+  tocOpen = true
+
+  [params.homeInfoParams]
+    Title = '你好，欢迎来到 Forgiving'
+    Content = '这里记录我的学习笔记、技术分享和生活感悟。'
+
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/jian-in'
+
+  [[params.socialIcons]]
+    name = 'email'
+    url = 'mailto:your@email.com'
+
+[params.cover]
+  hidden = false
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[markup]
+  [markup.highlight]
+    style = 'monokai'
+    lineNos = true
+    codeFences = true
+
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
