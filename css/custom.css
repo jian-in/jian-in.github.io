@@ -42,3 +42,6 @@ html[data-theme="dark"] .home-hero{background:linear-gradient(135deg,rgba(99,102
 html[data-theme="dark"] .post-card{background:rgba(46,46,51,0.8)}
 html[data-theme="dark"] .post-card:hover{box-shadow:0 12px 40px rgba(0,0,0,0.3)}
 @media(max-width:640px){.home-hero h1{font-size:1.6rem}.stat-number{font-size:1.3rem}.post-card{padding:1.2rem}}
+/* Go to top arrow - smaller */
+.top-link svg {width: 28px !important; height: 28px !important; padding: 6px !important; background: var(--entry); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s}
+.top-link:hover svg {background: #6366f1; color: white; transform: translateY(-2px)}
