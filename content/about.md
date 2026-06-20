@@ -5,7 +5,7 @@ draft: false
 ---
 
 <div style="text-align:center;margin-bottom:2rem">
-<img src="https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E6%A0%A1%E6%AD%A3%E5%90%8D%E5%90%8E.jpg" width="200" style="border-radius:50%;box-shadow:0 8px 32px rgba(99,102,241,0.2);border:4px solid rgba(99,102,241,0.3)" alt="avatar">
+<img src="https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/20161231002739_BRzwL.jpeg" width="200" style="border-radius:50%;box-shadow:0 8px 32px rgba(99,102,241,0.2);border:4px solid rgba(99,102,241,0.3)" alt="avatar">
 </div>
 
 ## 你好！
