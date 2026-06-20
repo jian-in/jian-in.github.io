@@ -1,14 +1,46 @@
 baseURL = 'https://forgiving.top/'
-languageCode = 'zh-cn'
+locale = 'zh-cn'
 defaultContentLanguage = 'zh'
 title = 'Forgiving'
 theme = 'PaperMod'
 paginate = 10
 
+[menu]
+  [[menu.main]]
+    identifier = 'posts'
+    name = '文章'
+    url = '/posts/'
+    weight = 10
+  [[menu.main]]
+    identifier = 'tags'
+    name = '标签'
+    url = '/tags/'
+    weight = 20
+  [[menu.main]]
+    identifier = 'categories'
+    name = '分类'
+    url = '/categories/'
+    weight = 30
+  [[menu.main]]
+    identifier = 'archives'
+    name = '归档'
+    url = '/archives/'
+    weight = 40
+  [[menu.main]]
+    identifier = 'search'
+    name = '搜索'
+    url = '/search/'
+    weight = 50
+  [[menu.main]]
+    identifier = 'about'
+    name = '关于'
+    url = '/about/'
+    weight = 60
+
 [params]
   author = 'jian-in'
-  description = '记录学习与生活的个人博客'
-  defaultTheme = 'auto'
+  description = '这里记录我的学习笔记、技术分享和生活感悟。'
+  defaultTheme = 'light'
   showShareButtons = true
   showReadingTime = true
   showPostNavLinks = true
@@ -16,6 +48,19 @@ paginate = 10
   showCodeCopyButtons = true
   showToc = true
   tocOpen = true
+  showWordCount = true
+  useHugoToc = true
+  ShowCodeCopyButtons = true
+
+  [params.search]
+    enable = true
+    contentLength = 4000
+    placeholder = '搜索文章...'
+
+  [params.editPost]
+    URL = "https://github.com/jian-in/my-blog/edit/main/content"
+    Text = "编辑本文"
+    appendFilePath = true
 
   [params.homeInfoParams]
     Title = '你好，欢迎来到 Forgiving'
@@ -27,7 +72,7 @@ paginate = 10
 
   [[params.socialIcons]]
     name = 'email'
-    url = 'mailto:your@email.com'
+    url = 'mailto:1152417202@qq.com'
 
 [params.cover]
   hidden = false
@@ -40,7 +85,10 @@ paginate = 10
     style = 'monokai'
     lineNos = true
     codeFences = true
-
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false

@@ -1,0 +1,52 @@
+{{ define "main" }}
+<div class="home-hero">
+  <img class="hero-avatar" src="https://pub-e2beca3b4dd74be8a63869265a452891.r2.dev/memes/fool/1058BF5A999EFABCA549E7E33C359971.jpg" alt="{{ .Site.Title }}的头像" width="120" height="120" loading="lazy" onclick="openAvatarModal(this.src)" style="cursor:pointer" title="点击查看大图">
+  <h1>{{ .Site.Title }}</h1>
+  <p>{{ .Site.Params.description }}</p>
+  <div class="skill-tags">
+    <span class="skill-tag">Python</span>
+    <span class="skill-tag">Markdown</span>
+    <span class="skill-tag">Hugo</span>
+    <span class="skill-tag">学习笔记</span>
+    <span class="skill-tag">生活感悟</span>
+  </div>
+</div>
+<div class="stats-section">
+  <div class="stat-item"><div class="stat-number">{{ len (where .Site.RegularPages "Section" "posts") }}</div><div class="stat-label">篇文章</div></div>
+  <div class="stat-item"><div class="stat-number">{{ len .Site.Taxonomies.tags }}</div><div class="stat-label">个标签</div></div>
+  <div class="stat-item"><div class="stat-number">{{ len .Site.Taxonomies.categories }}</div><div class="stat-label">个分类</div></div>
+</div>
+<div class="section-title">最新文章</div>
+<div class="posts-grid">
+  {{ range (first 6 (where .Site.RegularPages "Section" "posts")) }}
+  <article class="post-card">
+    <div class="card-meta">{{ with .Params.categories }}<span class="card-category">{{ index . 0 }}</span>{{ end }}<span>{{ .Date.Format "2006-01-02" }}</span></div>
+    <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    <div class="card-desc">{{ .Summary | plainify | truncate 120 }}</div>
+    {{ with .Params.tags }}<div class="card-tags">{{ range . }}<a class="card-tag" href="{{ "tags/" | absURL }}{{ . | urlize }}/">#{{ . }}</a>{{ end }}</div>{{ end }}
+    <a class="card-link" href="{{ .Permalink }}">阅读全文 &rarr;</a>
+  </article>
+  {{ end }}
+</div>
+<div class="view-more"><a href="{{ "posts/" | absURL }}">查看全部文章 &rarr;</a></div>
+{{ with .Site.Taxonomies.tags }}
+<div class="section-title">标签</div>
+<div class="tags-cloud">{{ range .ByCount }}<a href="{{ .Page.Permalink }}">#{{ .Page.Title }} ({{ .Count }})</a>{{ end }}</div>
+{{ end }}
+<div class="footer-links">
+  <a class="footer-link-item" href="{{ "posts/" | absURL }}"><span class="link-icon">&#128196;</span>文章</a>
+  <a class="footer-link-item" href="{{ "tags/" | absURL }}"><span class="link-icon">&#127991;</span>标签</a>
+  <a class="footer-link-item" href="{{ "categories/" | absURL }}"><span class="link-icon">&#128194;</span>分类</a>
+  <a class="footer-link-item" href="{{ "archives/" | absURL }}"><span class="link-icon">&#128218;</span>归档</a>
+  <a class="footer-link-item" href="{{ "about/" | absURL }}"><span class="link-icon">&#128100;</span>关于</a>
+</div>
+<div id="avatarModal" class="avatar-modal" onclick="closeAvatarModal()">
+  <img id="avatarModalImg" class="avatar-modal-img" src="" alt="头像大图">
+  <span class="avatar-modal-close">&times;</span>
+</div>
+<script>
+function openAvatarModal(src){document.getElementById('avatarModalImg').src=src;document.getElementById('avatarModal').classList.add('active');document.body.style.overflow='hidden'}
+function closeAvatarModal(){document.getElementById('avatarModal').classList.remove('active');document.body.style.overflow=''}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAvatarModal()});
+</script>
+{{ end }}

@@ -1,0 +1,24 @@
+# Hugo 构建产物
+public/
+resources/
+
+# 缓存和临时文件
+.hugo_build.lock
+hugo-cache/
+*.cache
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 博客优化任务文件
+blog-optimization-tasks.md
+
+# 临时部署目录（如果还在使用）
+deploy-temp/
