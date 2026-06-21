@@ -49,6 +49,24 @@ jobs:
             echo "✅ custom.css 已复制到 public/css/"
           fi
 
+      - name: Verify build output
+        run: |
+          echo "=== public 目录内容 ==="
+          ls -la public/
+          echo ""
+          echo "=== 检查关键文件 ==="
+          for f in index.html index.xml index.json sitemap.xml 404.html; do
+            if [ -f "public/$f" ]; then
+              echo "✅ $f 存在 ($(wc -c < public/$f) bytes)"
+            else
+              echo "❌ $f 缺失!"
+            fi
+          done
+          echo ""
+          echo "=== HTML 文件列表 ==="
+          find public/ -name "*.html" -type f
+          test -f public/index.html || exit 1
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
