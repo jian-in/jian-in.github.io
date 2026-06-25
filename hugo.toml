@@ -32,6 +32,11 @@ paginate = 10
     url = '/search/'
     weight = 50
   [[menu.main]]
+    identifier = 'gallery'
+    name = '展馆'
+    url = '/gallery/'
+    weight = 55
+  [[menu.main]]
     identifier = 'about'
     name = '关于'
     url = '/about/'

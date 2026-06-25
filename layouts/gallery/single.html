@@ -1,0 +1,120 @@
+{{ define "main" }}
+<div class="gallery-header">
+  <h1 class="gallery-title rainbow-text">{{ .Title }}</h1>
+  <p class="gallery-subtitle">点击任意图片查看大图 · 移动鼠标感受3D效果</p>
+</div>
+
+<div class="gallery-grid">
+  {{ range $index, $item := .Site.Data.gallery }}
+  <div class="gallery-card" data-index="{{ $index }}"
+       style="{{ with $item.color }}--card-hue: {{ . }};{{ end }}animation-delay: {{ mul $index 0.1 }}s">
+    <div class="card-border-flow">
+      <div class="card-inner">
+        <div class="card-image-wrap">
+          <img class="card-image" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">
+          <div class="card-glow"></div>
+        </div>
+        {{ if or $item.title $item.desc }}
+        <div class="card-info">
+          {{ with $item.title }}<h3 class="card-title rainbow-text">{{ . }}</h3>{{ end }}
+          {{ with $item.desc }}<p class="card-desc">{{ . }}</p>{{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+  {{ end }}
+</div>
+
+{{ if not .Site.Data.gallery }}
+<div class="gallery-empty">
+  <p>还没有图片呢喵~</p>
+  <p>编辑 <code>data/gallery.yaml</code> 添加你的第一张图片吧！</p>
+</div>
+{{ end }}
+
+<!-- Lightbox -->
+<div id="galleryLightbox" class="gallery-lightbox" onclick="closeLightbox()">
+  <div class="lightbox-backdrop"></div>
+  <div class="lightbox-content">
+    <img id="lightboxImg" class="lightbox-img" src="" alt="">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
+  </div>
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-prev" onclick="navLightbox(-1)">&#8249;</button>
+  <button class="lightbox-next" onclick="navLightbox(1)">&#8250;</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   3D Tilt Effect
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.gallery-card').forEach(card => {
+  const inner = card.querySelector('.card-border-flow');
+
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -12;
+    const rotateY = ((x - centerX) / centerX) * 12;
+
+    inner.style.transform =
+      `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    inner.style.transform =
+      'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+  });
+
+  card.addEventListener('click', e => {
+    if (e.target.closest('.card-info')) return;
+    const idx = parseInt(card.dataset.index);
+    openLightbox(idx);
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   Lightbox
+   ═══════════════════════════════════════════════ */
+const galleryData = {{ .Site.Data.gallery | jsonify }};
+let currentIndex = 0;
+
+function openLightbox(idx) {
+  currentIndex = idx;
+  const item = galleryData[idx];
+  const lb = document.getElementById('galleryLightbox');
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  img.src = item.image;
+  img.alt = item.title || '';
+  cap.innerHTML = item.title
+    ? '<h3>' + item.title + '</h3>' + (item.desc ? '<p>' + item.desc + '</p>' : '')
+    : '';
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('galleryLightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  event.stopPropagation();
+  currentIndex = (currentIndex + dir + galleryData.length) % galleryData.length;
+  openLightbox(currentIndex);
+}
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('galleryLightbox');
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+</script>
+{{ end }}

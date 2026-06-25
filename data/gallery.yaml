@@ -1,0 +1,21 @@
+# ═══════════════════════════════════════════════
+# 图像展馆数据
+# ═══════════════════════════════════════════════
+# 在下方添加你的图片，格式如下：
+#
+# - title: "图片标题"
+#   desc: "图片描述（可选）"
+#   image: "https://你的R2图片链接"
+#   color: "#f97316"          # 可选，边框主色调，不填则自动彩虹色
+#
+# ═══════════════════════════════════════════════
+
+- title: "发呆"
+  desc: "把这里换成你自己的图片描述"
+  image: "https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/20161231002739_BRzwL.jpeg"
+- title: "挑战"
+  desc: "遇到我，你们才是挑战者"
+  image: "https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/OIP.webp"
+- title: "哦呵呵"
+  desc: "气气你们的东西"
+  image: "https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/n6SWEOQ3F9gvwzg.thumb.1000_0.jpeg"
