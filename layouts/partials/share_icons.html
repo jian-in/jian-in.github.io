@@ -1,0 +1,134 @@
+{{- $pageurl := .Permalink }}
+{{- $title := .Title }}
+
+{{- $.Scratch.Set "tags" ""}}
+
+{{- with .Params.Tags }}
+{{- $hashtags := newScratch}}
+{{- range . }}{{ $hashtags.Add "tags" (slice (replaceRE "(\\s)" "" . ))}}{{end}}
+{{- $.Scratch.Set "tags" (delimit ($hashtags.Get "tags") ",") }}
+{{- end -}}
+
+{{- $custom := false }}
+{{- $ShareButtons := (.Param "ShareButtons")}}
+{{- with $ShareButtons }}{{ $custom = true }}{{ end }}
+
+<ul class="share-buttons">
+    {{- if (or (cond ($custom) (in $ShareButtons "x") (true)) (cond ($custom) (in $ShareButtons "twitter") (true))) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on x"
+            href="https://x.com/intent/tweet/?text={{ $title }}&amp;url={{ $pageurl }}&amp;hashtags={{- $.Scratch.Get "tags" -}}">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "linkedin") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ $pageurl }}&amp;title={{ $title }}&amp;summary={{ $title }}&amp;source={{ $pageurl }}">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "reddit") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on reddit"
+            href="https://reddit.com/submit?url={{ $pageurl }}&title={{ $title }}">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "facebook") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on facebook"
+            href="https://facebook.com/sharer/sharer.php?u={{ $pageurl }}">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "whatsapp") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on whatsapp"
+            href="https://api.whatsapp.com/send?text={{ $title }}%20-%20{{ $pageurl }}">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "telegram") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on telegram"
+            href="https://telegram.me/share/url?text={{ $title }}&amp;url={{ $pageurl }}">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+
+    <!-- WeChat Share (QR Code) -->
+    <li class="share-wechat" style="position:relative;display:inline-block;">
+        <a href="javascript:void(0)" aria-label="分享到微信" style="color:#07c160;cursor:pointer;">
+            <svg viewBox="0 0 24 24" height="30px" width="30px" fill="currentColor">
+                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05a6.127 6.127 0 01-.255-1.736c0-3.64 3.385-6.592 7.56-6.592.267 0 .526.022.788.044C16.727 4.842 13.074 2.188 8.691 2.188zm-2.79 3.91a1.069 1.069 0 11-.001 2.137 1.069 1.069 0 01.001-2.137zm5.237 0a1.069 1.069 0 110 2.137 1.069 1.069 0 010-2.137zM24 14.637c0-3.257-3.258-5.899-7.277-5.899-4.02 0-7.277 2.642-7.277 5.899 0 3.258 3.258 5.9 7.277 5.9.85 0 1.669-.128 2.432-.357a.699.699 0 01.584.08l1.55.909a.267.267 0 00.136.044.237.237 0 00.236-.241c0-.059-.023-.116-.039-.174l-.32-1.209a.478.478 0 01.174-.541C23.012 18.267 24 16.564 24 14.637zm-9.658-1.025a.867.867 0 110-1.733.867.867 0 010 1.733zm4.76 0a.867.867 0 110-1.733.867.867 0 010 1.733z"/>
+            </svg>
+        </a>
+        <div class="wechat-qr" style="display:none;position:absolute;bottom:42px;left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:100;text-align:center;min-width:180px;">
+            <div style="font-size:12px;color:#666;margin-bottom:8px;font-weight:500;">微信扫码分享</div>
+            <img id="wechatQRImg" src="" alt="QR Code" style="width:150px;height:150px;border-radius:8px;">
+        </div>
+    </li>
+
+    <!-- Weibo Share -->
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on weibo"
+            href="https://service.weibo.com/share/share.php?url={{ $pageurl }}&amp;title={{ $title }}" style="color:#ff8200;">
+            <svg viewBox="0 0 24 24" height="30px" width="30px" fill="currentColor">
+                <path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zM20.196 9.4a5.122 5.122 0 00-5.453-1.29.863.863 0 01-1.093-.503.863.863 0 01.503-1.093 6.846 6.846 0 017.288 1.724 6.84 6.84 0 011.476 7.407.863.863 0 01-1.128.456.863.863 0 01-.456-1.128A5.121 5.121 0 0020.196 9.4z"/>
+                <path d="M17.737 11.356a3.255 3.255 0 00-3.468-.82.616.616 0 11-.462-1.142 4.493 4.493 0 014.782 1.132 4.485 4.485 0 01.968 4.855.617.617 0 11-1.143-.463 3.253 3.253 0 00-.677-3.562z"/>
+            </svg>
+        </a>
+    </li>
+
+    {{- if (cond ($custom) (in $ShareButtons "ycombinator") (true)) }}
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share {{ $title | plainify }} on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t={{ $title }}&u={{ $pageurl }}">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor">
+                <path d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+</ul>
+
+<script>
+(function(){
+  var wechatBtn = document.querySelector('.share-wechat');
+  if(!wechatBtn) return;
+  var qrDiv = wechatBtn.querySelector('.wechat-qr');
+  var qrImg = document.getElementById('wechatQRImg');
+  var pageUrl = '{{ $pageurl }}';
+  var loaded = false;
+
+  wechatBtn.addEventListener('mouseenter', function(){
+    if(!loaded && qrImg){
+      qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(pageUrl);
+      loaded = true;
+    }
+    if(qrDiv) qrDiv.style.display = 'block';
+  });
+  wechatBtn.addEventListener('mouseleave', function(){
+    if(qrDiv) qrDiv.style.display = 'none';
+  });
+})();
+</script>

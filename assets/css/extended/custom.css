@@ -1017,6 +1017,54 @@ details[open] summary { color: var(--primary); }
 .single-content a:hover,
 .page-content a:hover { color: #ea580c; }
 
+/* ── Share Buttons ── */
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 1.2rem 0;
+  margin: 1.5rem 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.share-buttons li {
+  list-style: none;
+  margin: 0;
+}
+
+.share-buttons li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--content);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.share-buttons li a:hover {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(249, 115, 22, 0.06);
+}
+
+.share-buttons li a svg {
+  transition: transform 0.3s;
+}
+
+.share-buttons li a:hover svg {
+  transform: scale(1.1);
+}
+
 /* ── Selection Color ── */
 ::selection {
   background: rgba(249, 115, 22, 0.2);
