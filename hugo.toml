@@ -1,9 +1,18 @@
 baseURL = 'https://forgiving.top/'
 locale = 'zh-cn'
 defaultContentLanguage = 'zh'
+timeZone = 'Asia/Shanghai'
 title = 'Forgiving'
 theme = 'PaperMod'
-paginate = 10
+enableRobotsTXT = true
+enableGitInfo = true
+
+[pagination]
+  pagerSize = 10
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
 
 [menu]
   [[menu.main]]
@@ -44,19 +53,37 @@ paginate = 10
 
 [params]
   author = 'jian-in'
+  avatar = 'https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/20161231002739_BRzwL.jpeg'
+  skills = ['Python', 'Markdown', 'Hugo', '学习笔记', '生活感悟']
   description = '这里记录我的学习笔记、技术分享和生活感悟。'
   defaultTheme = 'light'
-  showShareButtons = true
-  showReadingTime = true
-  showPostNavLinks = true
-  showBreadCrumbs = true
-  showCodeCopyButtons = true
-  showToc = true
-  tocOpen = true
-  showWordCount = true
-  useHugoToc = true
   ShowCodeCopyButtons = true
+  ShowShareButtons = true
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowToc = true
+  TocOpen = true
+  ShowWordCount = true
+  UseHugoToc = true
+  ShowRssButtonInSectionTermList = true
+  ShowAllPagesInArchive = true
+  ShowPageNums = true
+  ShowFullTextinRSS = false
+  hideFooter = false
+  disableScrollToTop = false
+  disableThemeToggle = false
+  DateFormat = '2006-01-02'
+  env = 'production'
+  images = ['/favicon.svg']
   comments = true
+
+  [params.assets]
+    favicon = 'favicon.svg'
+    favicon16x16 = 'favicon.svg'
+    favicon32x32 = 'favicon.svg'
+    apple_touch_icon = 'favicon.svg'
+    safari_pinned_tab = 'favicon.svg'
 
   [params.search]
     enable = true
@@ -64,8 +91,8 @@ paginate = 10
     placeholder = '搜索文章...'
 
   [params.editPost]
-    URL = "https://github.com/jian-in/my-blog/edit/main/content"
-    Text = "编辑本文"
+    URL = 'https://github.com/jian-in/jian-in.github.io/edit/master/content'
+    Text = '编辑本文'
     appendFilePath = true
 
   [params.homeInfoParams]
@@ -82,6 +109,20 @@ paginate = 10
 
 [params.cover]
   hidden = false
+  hiddenInList = false
+  hiddenInSingle = false
+
+[minify]
+  disableXML = true
+  minifyOutput = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+    maxAge = '720h'
+  [caches.assets]
+    dir = ':resourceDir/_gen'
+    maxAge = '720h'
 
 [outputs]
   home = ['HTML', 'RSS', 'JSON']

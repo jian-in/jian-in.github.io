@@ -2,7 +2,7 @@
 title: "Python学习笔记：从零开始"
 date: 2026-06-15T12:00:00+08:00
 tags: ["Python", "教程", "入门"]
-categories: ["编程"]
+categories: ["技术"]
 summary: "Python入门基础，变量、条件判断、循环"
 draft: false
 ---

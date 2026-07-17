@@ -1157,9 +1157,11 @@ html[data-theme="dark"] .page-content {
 html[data-theme="dark"] .post-entry p,
 html[data-theme="dark"] .single-content p,
 html[data-theme="dark"] .page-content p,
+html[data-theme="dark"] .post-content p,
 html[data-theme="dark"] .post-entry li,
 html[data-theme="dark"] .single-content li,
-html[data-theme="dark"] .page-content li {
+html[data-theme="dark"] .page-content li,
+html[data-theme="dark"] .post-content li {
   color: #d6d3d1;
 }
 
@@ -1168,7 +1170,10 @@ html[data-theme="dark"] .post-entry h2,
 html[data-theme="dark"] .post-entry h3,
 html[data-theme="dark"] .single-content h1,
 html[data-theme="dark"] .single-content h2,
-html[data-theme="dark"] .single-content h3 {
+html[data-theme="dark"] .single-content h3,
+html[data-theme="dark"] .post-content h1,
+html[data-theme="dark"] .post-content h2,
+html[data-theme="dark"] .post-content h3 {
   color: #fafaf9;
 }
 

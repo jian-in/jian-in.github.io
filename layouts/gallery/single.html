@@ -5,7 +5,7 @@
 </div>
 
 <div class="gallery-grid">
-  {{ range $index, $item := .Site.Data.gallery }}
+  {{ range $index, $item := hugo.Data.gallery }}
   <div class="gallery-card" data-index="{{ $index }}"
        style="{{ with $item.color }}--card-hue: {{ . }};{{ end }}animation-delay: {{ mul $index 0.1 }}s">
     <div class="card-border-flow">
@@ -26,7 +26,7 @@
   {{ end }}
 </div>
 
-{{ if not .Site.Data.gallery }}
+{{ if not hugo.Data.gallery }}
 <div class="gallery-empty">
   <p>还没有图片呢喵~</p>
   <p>编辑 <code>data/gallery.yaml</code> 添加你的第一张图片吧！</p>
@@ -41,8 +41,8 @@
     <div id="lightboxCaption" class="lightbox-caption"></div>
   </div>
   <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-  <button class="lightbox-prev" onclick="navLightbox(-1)">&#8249;</button>
-  <button class="lightbox-next" onclick="navLightbox(1)">&#8250;</button>
+  <button class="lightbox-prev" onclick="navLightbox(event, -1)">&#8249;</button>
+  <button class="lightbox-next" onclick="navLightbox(event, 1)">&#8250;</button>
 </div>
 
 <script>
@@ -80,7 +80,7 @@ document.querySelectorAll('.gallery-card').forEach(card => {
 /* ═══════════════════════════════════════════════
    Lightbox
    ═══════════════════════════════════════════════ */
-const galleryData = {{ .Site.Data.gallery | jsonify }};
+const galleryData = {{ hugo.Data.gallery | jsonify | safeJS }};
 let currentIndex = 0;
 
 function openLightbox(idx) {
@@ -103,7 +103,7 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
-function navLightbox(dir) {
+function navLightbox(event, dir) {
   event.stopPropagation();
   currentIndex = (currentIndex + dir + galleryData.length) % galleryData.length;
   openLightbox(currentIndex);
@@ -113,8 +113,8 @@ document.addEventListener('keydown', e => {
   const lb = document.getElementById('galleryLightbox');
   if (!lb.classList.contains('active')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') navLightbox(-1);
-  if (e.key === 'ArrowRight') navLightbox(1);
+  if (e.key === 'ArrowLeft') navLightbox(e, -1);
+  if (e.key === 'ArrowRight') navLightbox(e, 1);
 });
 </script>
 {{ end }}

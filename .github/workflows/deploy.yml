@@ -41,14 +41,6 @@ jobs:
           hugo --minify --gc
           echo "✅ Hugo 构建完成"
 
-      - name: Copy custom CSS
-        run: |
-          if [ -f "static/css/custom.css" ]; then
-            mkdir -p public/css
-            cp static/css/custom.css public/css/custom.css
-            echo "✅ custom.css 已复制到 public/css/"
-          fi
-
       - name: Verify build output
         run: |
           echo "=== public 目录内容 ==="

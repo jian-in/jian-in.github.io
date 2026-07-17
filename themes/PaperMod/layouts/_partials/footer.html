@@ -123,13 +123,7 @@
             }, 2000);
         }
 
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
+        function copyWithSelection() {
             const range = document.createRange();
             range.selectNodeContents(codeblock);
             const selection = window.getSelection();
@@ -138,8 +132,19 @@
             try {
                 document.execCommand('copy');
                 copyingDone();
-            } catch (e) { };
+            } catch (e) { }
             selection.removeRange(range);
+        }
+
+        copybutton.addEventListener('click', () => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent)
+                    .then(copyingDone)
+                    .catch(copyWithSelection);
+                return;
+            }
+
+            copyWithSelection();
         });
 
         if (container.classList.contains("highlight")) {

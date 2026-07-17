@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="home-hero">
   <img class="hero-avatar"
-       src="https://pub-4d19ac99c083403ebd4ce5378906a944.r2.dev/%E5%B0%8F%E8%A1%A8%E6%83%85/blog_picture/20161231002739_BRzwL.jpeg"
+       src="{{ .Site.Params.avatar }}"
        alt="{{ .Site.Title }}的头像"
        width="120" height="120"
        loading="lazy"
@@ -11,11 +11,9 @@
   <h1>{{ .Site.Title }}</h1>
   <p>{{ .Site.Params.description }}</p>
   <div class="skill-tags">
-    <span class="skill-tag">Python</span>
-    <span class="skill-tag">Markdown</span>
-    <span class="skill-tag">Hugo</span>
-    <span class="skill-tag">学习笔记</span>
-    <span class="skill-tag">生活感悟</span>
+    {{ range .Site.Params.skills }}
+    <span class="skill-tag">{{ . }}</span>
+    {{ end }}
   </div>
 </div>
 
