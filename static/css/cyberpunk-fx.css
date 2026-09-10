@@ -1,0 +1,206 @@
+/* ═══════════════════════════════════════════════════════════════
+   Forgiving Blog — Cyberpunk FX Layer（特效层）
+   ───────────────────────────────────────────────────────────────
+   叠在 cyberpunk.css 之上，只补"光"和"动"：
+   CRT 扫描线 · 霓虹辉光增强 · glitch 故障 · 呼吸脉冲 · 卡片扫光 · header 流光
+   仍只在深色模式生效，浅色模式不受影响。
+   回滚：删除本文件 + extend_head.html 中对应 <link> 一行，即回到静态赛博朋克版。
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 0. Keyframes ── */
+@keyframes fx-scan {
+  from { background-position: 0 0; }
+  to   { background-position: 0 4px; }
+}
+@keyframes fx-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.86; }
+}
+@keyframes fx-glitch {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3px, 1px); }
+  40%  { transform: translate(3px, -1px); }
+  60%  { transform: translate(-2px, -2px); }
+  80%  { transform: translate(2px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes fx-header-line {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+@keyframes fx-sweep {
+  from { background-position: 180% 0, 0 0; }
+  to   { background-position: -80% 0, 0 0; }
+}
+@keyframes fx-halo {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.28), 0 0 30px rgba(0, 240, 255, 0.30);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.55), 0 0 64px rgba(0, 240, 255, 0.55),
+                0 0 110px rgba(255, 46, 136, 0.28);
+  }
+}
+@keyframes fx-main-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.05), 0 0 48px rgba(0, 240, 255, 0.07),
+                0 24px 60px rgba(0, 0, 0, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.16), 0 0 76px rgba(0, 240, 255, 0.15),
+                0 24px 60px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ── 1. CRT 扫描线（覆盖全屏，最上层的视觉滤镜）── */
+html[data-theme="dark"] body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.30) 0,
+    rgba(0, 0, 0, 0.30) 1px,
+    rgba(0, 0, 0, 0) 1px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  opacity: 0.5;
+  z-index: 9990;
+  pointer-events: none;
+  animation: fx-scan 1.4s linear infinite;
+}
+
+/* ── 2. 霓虹辉光增强（保留原渐变配色，叠三层光晕）── */
+html[data-theme="dark"] .home-hero h1,
+html[data-theme="dark"] .post-title {
+  filter:
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))
+    drop-shadow(0 0 16px rgba(0, 240, 255, 0.85))
+    drop-shadow(0 0 40px rgba(0, 240, 255, 0.55));
+  animation: fx-breathe 4.5s ease-in-out infinite;
+}
+html[data-theme="dark"] .stat-number {
+  filter:
+    drop-shadow(0 0 4px rgba(255, 255, 255, 0.45))
+    drop-shadow(0 0 14px rgba(0, 240, 255, 0.8));
+  animation: fx-breathe 3.6s ease-in-out infinite;
+}
+
+/* ── 3. glitch 故障（hover 标题触发）── */
+html[data-theme="dark"] .home-hero h1:hover,
+html[data-theme="dark"] .post-title:hover {
+  animation: fx-glitch 0.32s steps(2, end) infinite;
+  filter:
+    drop-shadow(3px 0 0 rgba(255, 46, 136, 0.9))
+    drop-shadow(-3px 0 0 rgba(0, 240, 255, 0.9))
+    drop-shadow(0 0 18px rgba(0, 240, 255, 0.8));
+}
+
+/* ── 4. header 底部流光 ── */
+html[data-theme="dark"] header::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background-image: linear-gradient(90deg,
+    transparent 0%,
+    var(--cyber-cyan) 20%,
+    var(--cyber-magenta) 50%,
+    var(--cyber-cyan) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+  animation: fx-header-line 5s linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* ── 5. 卡片扫光（叠在既有 radial glow 之上，hover 时掠过）── */
+html[data-theme="dark"] .post-card::after {
+  background-image:
+    linear-gradient(115deg,
+      transparent 35%,
+      rgba(0, 240, 255, 0.16) 47%,
+      rgba(255, 255, 255, 0.10) 51%,
+      transparent 64%),
+    radial-gradient(circle at center, rgba(0, 240, 255, 0.06) 0%, transparent 60%);
+  background-size: 220% 100%, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+html[data-theme="dark"] .post-card:hover::after {
+  opacity: 1;
+  animation: fx-sweep 1.1s ease-out;
+}
+
+/* ── 6. 头像霓虹呼吸环（保留入场动画）── */
+html[data-theme="dark"] .hero-avatar {
+  animation:
+    fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both,
+    fx-halo 4s ease-in-out 1s infinite;
+}
+html[data-theme="dark"] .hero-avatar:hover {
+  animation: none;
+  box-shadow:
+    0 0 0 7px rgba(0, 240, 255, 0.14),
+    0 0 70px rgba(0, 240, 255, 0.6),
+    0 0 120px rgba(255, 46, 136, 0.3);
+}
+
+/* ── 7. 主容器边缘呼吸 ── */
+html[data-theme="dark"] .main {
+  animation:
+    fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both,
+    fx-main-glow 7s ease-in-out infinite;
+}
+
+/* ── 8. 链接 / 标签霓虹反馈 ── */
+html[data-theme="dark"] .post-content a:hover,
+html[data-theme="dark"] .tags-cloud a:hover,
+html[data-theme="dark"] .post-card .card-link:hover,
+html[data-theme="dark"] .view-more a:hover {
+  text-shadow: 0 0 10px currentColor, 0 0 24px rgba(0, 240, 255, 0.65);
+}
+html[data-theme="dark"] .skill-tag:hover,
+html[data-theme="dark"] .post-tags a:hover,
+html[data-theme="dark"] .footer-link-item:hover {
+  box-shadow: 0 0 22px rgba(0, 240, 255, 0.45), 0 0 46px rgba(0, 240, 255, 0.18);
+}
+
+/* ── 9. 选中文字 ── */
+html[data-theme="dark"] ::selection {
+  background: rgba(0, 240, 255, 0.35);
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+}
+
+/* ── 10. 无障碍：尊重 prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] body::after,
+  html[data-theme="dark"] header::after {
+    display: none;
+  }
+  html[data-theme="dark"] .home-hero h1,
+  html[data-theme="dark"] .post-title,
+  html[data-theme="dark"] .stat-number,
+  html[data-theme="dark"] .hero-avatar,
+  html[data-theme="dark"] .main {
+    animation: none !important;
+  }
+  html[data-theme="dark"] .post-card:hover::after {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* ── 11. 移动端降级（全屏扫描线与持续发光在低端机开销大）── */
+@media (max-width: 768px) {
+  html[data-theme="dark"] body::after { display: none; }
+  html[data-theme="dark"] .main {
+    animation: fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  html[data-theme="dark"] .hero-avatar {
+    animation: fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+}
