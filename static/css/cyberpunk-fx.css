@@ -8,9 +8,12 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── 0. Keyframes ── */
-@keyframes fx-scan {
-  from { background-position: 0 0; }
-  to   { background-position: 0 4px; }
+/* 扫描光带：自上而下掠过整屏。
+   注意：位移距离必须远大于纹理的重复周期——若位移恰好等于周期，
+   视觉上完全静止（前一版 0→4px 配 4px 周期就是这个坑）。 */
+@keyframes fx-scan-sweep {
+  from { background-position: 0 -320px, 0 0; }
+  to   { background-position: 0 100%, 0 0; }
 }
 @keyframes fx-breathe {
   0%, 100% { opacity: 1; }
@@ -52,23 +55,36 @@
   }
 }
 
-/* ── 1. CRT 扫描线（覆盖全屏，最上层的视觉滤镜）── */
+/* ── 1. CRT 扫描：静态细纹理 + 自上而下掠过的扫描光带 ── */
 html[data-theme="dark"] body::after {
   content: '';
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.30) 0,
-    rgba(0, 0, 0, 0.30) 1px,
-    rgba(0, 0, 0, 0) 1px,
-    rgba(0, 0, 0, 0) 4px
-  );
-  opacity: 0.5;
+  background-image:
+    /* 层 1：扫描光带（会动，位置由动画驱动） */
+    linear-gradient(180deg,
+      transparent 0%,
+      rgba(0, 240, 255, 0.02) 28%,
+      rgba(0, 240, 255, 0.10) 45%,
+      rgba(190, 250, 255, 0.22) 50%,
+      rgba(0, 240, 255, 0.10) 55%,
+      rgba(0, 240, 255, 0.02) 72%,
+      transparent 100%),
+    /* 层 2：静态 CRT 细纹理（不动，提供质感；alpha 已按整体 opacity 折算） */
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.18) 0,
+      rgba(0, 0, 0, 0.18) 1px,
+      rgba(0, 0, 0, 0) 1px,
+      rgba(0, 0, 0, 0) 4px);
+  background-size: 100% 320px, auto;
+  background-repeat: no-repeat, repeat;
+  background-position: 0 -320px, 0 0;
+  opacity: 0.85;
   z-index: 9990;
   pointer-events: none;
-  animation: fx-scan 1.4s linear infinite;
+  animation: fx-scan-sweep 7s linear infinite;
 }
 
 /* ── 2. 霓虹辉光增强（保留原渐变配色，叠三层光晕）── */
