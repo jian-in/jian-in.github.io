@@ -1,0 +1,303 @@
+/* ═══════════════════════════════════════════════════════════════
+   Forgiving Blog — Cyberpunk Dark Theme
+   仅在深色模式（html[data-theme="dark"]）下生效；浅色模式不受影响。
+   加载顺序：custom.css 之后（layouts/partials/extend_head.html）。
+   配色：近黑底 #05060a · 霓虹青 #00f0ff · 品红 #ff2e88 · 紫 #a855f7
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Design Tokens ── */
+/* 必须写 :root[data-theme="dark"]：custom.css 里的 html[data-theme="dark"] :root
+   是无效选择器（:root 不可能是 html 的后代），故此处才是深色变量真正生效点。 */
+:root[data-theme="dark"] {
+  --theme: #05060a;  --entry: rgba(10, 16, 28, 0.72);
+  --primary: #00f0ff;  --primary-rgb: 0, 240, 255;
+  --secondary: #7d8ba3;  --tertiary: #1b2233;
+  --content: #d9e6f2;  --border: rgba(0, 240, 255, 0.18);
+  --code-block-bg: #070b14;  --code-bg: #0b1020;
+  color-scheme: dark;
+  --cyber-bg: #05060a;  --cyber-panel: rgba(10, 16, 28, 0.78);
+  --cyber-panel-2: rgba(14, 22, 38, 0.72);  --cyber-ink: rgba(8, 12, 22, 0.62);
+  --cyber-line: rgba(0, 240, 255, 0.22);  --cyber-cyan: #00f0ff;
+  --cyber-magenta: #ff2e88;  --cyber-violet: #a855f7;  --cyber-yellow: #f0e14a;
+  --cyber-text: #d9e6f2;  --cyber-text-dim: #8fa3bd;  --cyber-ink-text: #06121a;
+  --cyber-glow-cyan: 0 0 14px rgba(0, 240, 255, 0.45);
+  --cyber-glow-magenta: 0 0 14px rgba(255, 46, 136, 0.40);
+  --font-display: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+/* ── 2. Background ── */
+html[data-theme="dark"], html[data-theme="dark"] body {
+  background-color: var(--cyber-bg) !important;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 15% -10%, rgba(0, 240, 255, 0.12), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(255, 46, 136, 0.12), transparent 45%) !important;
+  background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100% !important;
+  background-position: center top !important;
+  background-attachment: fixed !important;
+}
+html[data-theme="dark"] body::before {
+  background: linear-gradient(180deg, rgba(5, 6, 10, 0.72) 0%,
+    rgba(5, 6, 10, 0.58) 45%, rgba(5, 6, 10, 0.84) 100%) !important;
+}
+/* 噪点层：保留质感，拉长周期以降开销 */
+html[data-theme="dark"] body::after { opacity: 0.07; animation-duration: 24s; }
+
+/* ── 3. Main Container ── */
+html[data-theme="dark"] .main {
+  background: var(--cyber-panel);
+  border: 1px solid var(--cyber-line);
+  box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.05), 0 0 48px rgba(0, 240, 255, 0.07),
+    0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* ── 4. Header / Nav ── */
+html[data-theme="dark"] header {
+  background: rgba(5, 8, 16, 0.86);  border-bottom: 1px solid var(--cyber-line);
+}
+html[data-theme="dark"] header nav a {
+  color: var(--cyber-text-dim);  font-family: var(--font-display);  letter-spacing: 0.04em;
+}
+html[data-theme="dark"] header nav a::after {
+  background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-magenta));
+  box-shadow: var(--cyber-glow-cyan);
+}
+html[data-theme="dark"] header nav a:hover { color: var(--cyber-cyan) !important; text-shadow: var(--cyber-glow-cyan); }
+
+/* ── 5. Homepage Hero ── */
+html[data-theme="dark"] .home-hero {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.07) 0%, transparent 45%, rgba(255, 46, 136, 0.07) 100%);
+  border: 1px solid var(--cyber-line);  box-shadow: inset 0 0 60px rgba(0, 240, 255, 0.04);
+}
+html[data-theme="dark"] .home-hero::before { background: radial-gradient(circle, rgba(0, 240, 255, 0.16) 0%, transparent 70%); }
+html[data-theme="dark"] .home-hero::after { background: radial-gradient(circle, rgba(255, 46, 136, 0.14) 0%, transparent 70%); }
+html[data-theme="dark"] .home-hero h1 {
+  font-family: var(--font-display);
+  background: linear-gradient(120deg, #00f0ff 0%, #a855f7 48%, #ff2e88 100%);
+  -webkit-background-clip: text;  background-clip: text;  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.35));  letter-spacing: 0.01em;
+}
+html[data-theme="dark"] .home-hero p { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .hero-avatar {
+  background-image: linear-gradient(#0a1020, #0a1020), linear-gradient(135deg, #00f0ff, #ff2e88);
+  box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.25), 0 0 32px rgba(0, 240, 255, 0.28);
+}
+html[data-theme="dark"] .hero-avatar:hover {
+  box-shadow: 0 0 0 6px rgba(0, 240, 255, 0.12), 0 0 48px rgba(0, 240, 255, 0.45);
+}
+
+/* ── 6. Skill Tags & Stats ── */
+html[data-theme="dark"] .skill-tag {
+  background: rgba(0, 240, 255, 0.06);  border-color: rgba(0, 240, 255, 0.28);
+  color: var(--cyber-cyan);  font-family: var(--font-display);
+}
+html[data-theme="dark"] .skill-tag:hover {
+  background: rgba(0, 240, 255, 0.14);  border-color: var(--cyber-cyan);
+  color: #fff;  box-shadow: var(--cyber-glow-cyan);
+}
+html[data-theme="dark"] .stat-item { background: var(--cyber-panel-2); border-color: var(--cyber-line); }
+html[data-theme="dark"] .stat-item::before { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-magenta)); }
+html[data-theme="dark"] .stat-item:hover { border-color: var(--cyber-cyan); box-shadow: 0 0 28px rgba(0, 240, 255, 0.16); }
+html[data-theme="dark"] .stat-number {
+  font-family: var(--font-display);
+  background: linear-gradient(135deg, #00f0ff, #ff2e88);
+  -webkit-background-clip: text;  background-clip: text;  -webkit-text-fill-color: transparent;
+}
+html[data-theme="dark"] .stat-label { color: var(--cyber-text-dim); }
+
+/* ── 7. Section Titles ── */
+html[data-theme="dark"] .section-title { color: var(--cyber-text); font-family: var(--font-display); }
+html[data-theme="dark"] .section-title::before { background: linear-gradient(180deg, var(--cyber-cyan), var(--cyber-magenta)); box-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .section-title::after { background: linear-gradient(90deg, var(--cyber-line), transparent); }
+
+/* ── 8. Post Cards ── */
+html[data-theme="dark"] .post-card { background: var(--cyber-panel-2); border: 1px solid rgba(0, 240, 255, 0.14); }
+html[data-theme="dark"] .post-card::before { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-magenta), var(--cyber-violet)); }
+html[data-theme="dark"] .post-card::after { background: radial-gradient(circle at center, rgba(0, 240, 255, 0.06) 0%, transparent 60%); }
+html[data-theme="dark"] .post-card:hover {
+  border-color: rgba(0, 240, 255, 0.5);  background: rgba(16, 26, 44, 0.85);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.16), 0 16px 44px rgba(0, 0, 0, 0.55);
+}
+html[data-theme="dark"] .post-card .card-meta { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .post-card .card-category { background: rgba(0, 240, 255, 0.12); color: var(--cyber-cyan); font-family: var(--font-display); }
+html[data-theme="dark"] .post-card h2 { font-family: var(--font-display); letter-spacing: 0; }
+html[data-theme="dark"] .post-card h2 a { color: var(--cyber-text); }
+html[data-theme="dark"] .post-card h2 a:hover { color: var(--cyber-cyan); text-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .post-card .card-desc { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .post-card .card-tag { background: rgba(168, 85, 247, 0.14); border-color: rgba(168, 85, 247, 0.3); color: #d6bcfa; }
+html[data-theme="dark"] .post-card .card-tag:hover { background: var(--cyber-violet); border-color: var(--cyber-violet); color: #fff; }
+html[data-theme="dark"] .post-card .card-link { color: var(--cyber-cyan); font-family: var(--font-display); }
+
+/* ── 9. View More / Tags Cloud / Footer Links ── */
+html[data-theme="dark"] .view-more a { color: var(--cyber-cyan); border-color: rgba(0, 240, 255, 0.5); font-family: var(--font-display); }
+html[data-theme="dark"] .view-more a::before { background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.15), transparent); }
+html[data-theme="dark"] .view-more a:hover { background: rgba(0, 240, 255, 0.12); color: #fff; box-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .tags-cloud a {
+  background: rgba(10, 16, 28, 0.7);  border-color: var(--cyber-line);
+  color: var(--cyber-text-dim);  font-family: var(--font-display);
+}
+html[data-theme="dark"] .tags-cloud a:hover { background: rgba(0, 240, 255, 0.14); border-color: var(--cyber-cyan); color: var(--cyber-cyan); box-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .footer-links { border-top-color: var(--cyber-line); }
+html[data-theme="dark"] .footer-link-item { background: var(--cyber-panel-2); border-color: var(--cyber-line); color: var(--cyber-text-dim); font-family: var(--font-display); }
+html[data-theme="dark"] .footer-link-item::before { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-magenta), var(--cyber-violet)); }
+html[data-theme="dark"] .footer-link-item:hover { background: rgba(16, 26, 44, 0.8); border-color: var(--cyber-cyan); color: var(--cyber-cyan); box-shadow: 0 0 28px rgba(0, 240, 255, 0.15); }
+
+/* ── 10. Article Body ── */
+/* 修正：custom.css 的 .post-content 在深色下仍是近黑文字（对比度不合格）。 */
+html[data-theme="dark"] .post-entry,
+html[data-theme="dark"] .single-content,
+html[data-theme="dark"] .page-content {
+  background: var(--cyber-ink) !important;  color: var(--cyber-text) !important;
+  border: 1px solid rgba(0, 240, 255, 0.10);
+}
+html[data-theme="dark"] .post-content,
+html[data-theme="dark"] .post-content p,
+html[data-theme="dark"] .post-content li,
+html[data-theme="dark"] .post-content td,
+html[data-theme="dark"] .post-entry p, html[data-theme="dark"] .post-entry li,
+html[data-theme="dark"] .single-content p, html[data-theme="dark"] .single-content li,
+html[data-theme="dark"] .page-content p, html[data-theme="dark"] .page-content li { color: var(--cyber-text); }
+html[data-theme="dark"] .post-title {
+  font-family: var(--font-display);
+  background: linear-gradient(120deg, #00f0ff 0%, #a855f7 50%, #ff2e88 100%);
+  -webkit-background-clip: text;  background-clip: text;  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+}
+html[data-theme="dark"] .post-meta { color: var(--cyber-text-dim); border-bottom-color: var(--cyber-line); }
+html[data-theme="dark"] .post-content h1, html[data-theme="dark"] .post-content h2,
+html[data-theme="dark"] .post-content h3, html[data-theme="dark"] .post-content h4,
+html[data-theme="dark"] .post-entry h1, html[data-theme="dark"] .post-entry h2, html[data-theme="dark"] .post-entry h3,
+html[data-theme="dark"] .single-content h1, html[data-theme="dark"] .single-content h2, html[data-theme="dark"] .single-content h3,
+html[data-theme="dark"] .page-content h1, html[data-theme="dark"] .page-content h2, html[data-theme="dark"] .page-content h3 {
+  color: #eaf4ff;  font-family: var(--font-display);  letter-spacing: 0;
+}
+html[data-theme="dark"] .post-content h2 { border-bottom-color: rgba(0, 240, 255, 0.35); }
+html[data-theme="dark"] .post-content h2::after { background: linear-gradient(90deg, var(--cyber-magenta), transparent); box-shadow: var(--cyber-glow-magenta); }
+html[data-theme="dark"] .post-content a,
+html[data-theme="dark"] .post-entry a,
+html[data-theme="dark"] .single-content a,
+html[data-theme="dark"] .page-content a { color: var(--cyber-cyan); border-bottom-color: rgba(0, 240, 255, 0.45); }
+html[data-theme="dark"] .post-content a:hover,
+html[data-theme="dark"] .post-entry a:hover,
+html[data-theme="dark"] .single-content a:hover,
+html[data-theme="dark"] .page-content a:hover { color: #7ef9ff; border-bottom-color: #7ef9ff; text-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .post-content ul li::marker,
+html[data-theme="dark"] .post-content ol li::marker { color: var(--cyber-cyan); }
+html[data-theme="dark"] .post-content blockquote {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(255, 46, 136, 0.05) 100%);
+  border-left-color: var(--cyber-cyan);  color: #c6d6e8;
+}
+html[data-theme="dark"] .post-content blockquote::before { color: rgba(0, 240, 255, 0.2); }
+html[data-theme="dark"] .post-content img {
+  border-color: rgba(0, 240, 255, 0.18);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.08), 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="dark"] .post-content table { border-color: rgba(0, 240, 255, 0.15); box-shadow: 0 0 24px rgba(0, 240, 255, 0.05); }
+html[data-theme="dark"] .post-content th {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.85), rgba(168, 85, 247, 0.85));
+  color: var(--cyber-ink-text);  font-family: var(--font-display);
+}
+html[data-theme="dark"] .post-content td { border-bottom-color: rgba(0, 240, 255, 0.1); color: #c6d6e8; }
+html[data-theme="dark"] .post-content tr:hover td { background: rgba(0, 240, 255, 0.05); }
+
+/* ── 11. Code ── */
+html[data-theme="dark"] pre, html[data-theme="dark"] .highlight,
+html[data-theme="dark"] .highlight pre, html[data-theme="dark"] .post-content .highlight,
+html[data-theme="dark"] .chroma {
+  background: var(--code-block-bg) !important;
+  border: 1px solid rgba(0, 240, 255, 0.16);
+  box-shadow: 0 0 26px rgba(0, 240, 255, 0.07), inset 0 1px 0 rgba(0, 240, 255, 0.06);
+  color: #cfe9f5 !important;
+}
+html[data-theme="dark"] pre code, html[data-theme="dark"] .highlight code,
+html[data-theme="dark"] .chroma code, html[data-theme="dark"] .highlight pre code {
+  background: transparent !important;  color: #cfe9f5 !important;
+}
+html[data-theme="dark"] .post-content code { background: rgba(0, 240, 255, 0.10); color: var(--cyber-cyan); border-color: rgba(0, 240, 255, 0.18); }
+
+/* ── 12. TOC ── */
+/* PaperMod 实际渲染 <details class="toc">，custom.css 的 .details .toc 不匹配。 */
+html[data-theme="dark"] .toc, html[data-theme="dark"] details.toc {
+  background: var(--cyber-panel-2);  border: 1px solid var(--cyber-line);
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.06);
+}
+html[data-theme="dark"] .toc summary, html[data-theme="dark"] details.toc summary { color: var(--cyber-cyan); font-family: var(--font-display); }
+html[data-theme="dark"] .toc li:hover, html[data-theme="dark"] .toc li:hover a { border-left-color: var(--cyber-cyan); color: var(--cyber-cyan); }
+
+/* ── 13. Post Footer / Tags / Pagination ── */
+html[data-theme="dark"] .post-footer { border-top-color: var(--cyber-line); }
+html[data-theme="dark"] .post-tags a { background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.2); color: var(--cyber-cyan); font-family: var(--font-display); }
+html[data-theme="dark"] .post-tags a:hover { background: rgba(0, 240, 255, 0.2); color: #fff; box-shadow: var(--cyber-glow-cyan); }
+html[data-theme="dark"] .paginav { background: var(--cyber-panel-2); border: 1px solid var(--cyber-line); }
+html[data-theme="dark"] .paginav a:hover { background: rgba(0, 240, 255, 0.08); }
+
+/* ── 14. Misc Chrome ── */
+html[data-theme="dark"] hr { background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent); opacity: 0.5; }
+html[data-theme="dark"] .top-link {
+  background: rgba(0, 240, 255, 0.12);  border: 1px solid var(--cyber-cyan);
+  color: var(--cyber-cyan);  box-shadow: var(--cyber-glow-cyan);
+}
+html[data-theme="dark"] .top-link:hover { background: var(--cyber-cyan); color: var(--cyber-ink-text); box-shadow: 0 0 24px rgba(0, 240, 255, 0.7); }
+html[data-theme="dark"] .reading-progress { background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-magenta)); box-shadow: 0 0 12px rgba(0, 240, 255, 0.6); }
+html[data-theme="dark"] .breadcrumbs, html[data-theme="dark"] .breadcrumbs a { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .breadcrumbs a:hover { color: var(--cyber-cyan); }
+html[data-theme="dark"] .search-toggle { color: var(--cyber-text) !important; }
+html[data-theme="dark"] .search-toggle:hover { color: var(--cyber-cyan) !important; }
+
+/* ── 15. Share Buttons ── */
+html[data-theme="dark"] .share-buttons { border-top-color: var(--cyber-line); }
+html[data-theme="dark"] .share-buttons li a, html[data-theme="dark"] .share-buttons li button {
+  background: rgba(10, 16, 28, 0.7);  border-color: var(--cyber-line);  color: var(--cyber-text-dim);
+}
+html[data-theme="dark"] .share-buttons li a:hover, html[data-theme="dark"] .share-buttons li button:hover {
+  background: rgba(0, 240, 255, 0.12);  border-color: var(--cyber-cyan);
+  color: var(--cyber-cyan);  box-shadow: var(--cyber-glow-cyan);
+}
+html[data-theme="dark"] .wechat-qr { background: #0a1020; border: 1px solid var(--cyber-line); box-shadow: 0 0 30px rgba(0, 240, 255, 0.15); }
+html[data-theme="dark"] .wechat-qr-label { color: var(--cyber-text-dim); }
+
+/* ── 16. Selection & Scrollbar ── */
+html[data-theme="dark"] ::selection { background: rgba(0, 240, 255, 0.3); color: #eaf6ff; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.5); }
+
+/* ── 17. Gallery ── */
+html[data-theme="dark"] .gallery-subtitle { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .rainbow-text {
+  background: linear-gradient(90deg, #00f0ff, #a855f7, #ff2e88, #f0e14a, #00f0ff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;  background-clip: text;  -webkit-text-fill-color: transparent;
+}
+html[data-theme="dark"] .card-border-flow { background: conic-gradient(from var(--border-angle, 0deg), #00f0ff, #a855f7, #ff2e88, #00f0ff); }
+html[data-theme="dark"] .gallery-card:hover .card-border-flow { box-shadow: 0 0 30px rgba(0, 240, 255, 0.35), 0 0 70px rgba(255, 46, 136, 0.20); }
+html[data-theme="dark"] .card-inner { background: rgba(8, 12, 22, 0.94); }
+html[data-theme="dark"] .card-image-wrap { background: var(--cyber-bg); }
+html[data-theme="dark"] .card-glow { background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.2) 0%, transparent 70%); }
+html[data-theme="dark"] .card-info { background: rgba(10, 16, 28, 0.96); border-top-color: rgba(0, 240, 255, 0.12); }
+html[data-theme="dark"] .card-title { color: #eaf4ff; font-family: var(--font-display); }
+html[data-theme="dark"] .card-desc { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .gallery-empty { color: var(--cyber-text-dim); }
+html[data-theme="dark"] .gallery-empty code { background: rgba(0, 240, 255, 0.1); color: var(--cyber-cyan); }
+
+/* ── 18. Lightbox ── */
+html[data-theme="dark"] .lightbox-backdrop { background: rgba(2, 4, 10, 0.92); }
+html[data-theme="dark"] .lightbox-img {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    linear-gradient(135deg, #00f0ff, #a855f7, #ff2e88);
+  box-shadow: 0 0 60px rgba(0, 240, 255, 0.2), 0 20px 80px rgba(0, 0, 0, 0.6);
+}
+html[data-theme="dark"] .lightbox-caption h3 {
+  background: linear-gradient(90deg, #00f0ff, #a855f7, #ff2e88);
+  -webkit-background-clip: text;  background-clip: text;  -webkit-text-fill-color: transparent;
+}
+html[data-theme="dark"] .lightbox-caption p { color: rgba(217, 230, 242, 0.7); }
+html[data-theme="dark"] .lightbox-close:hover,
+html[data-theme="dark"] .lightbox-prev:hover,
+html[data-theme="dark"] .lightbox-next:hover { background: rgba(0, 240, 255, 0.5); }
+
+/* ── 19. Responsive ── */
+@media (max-width: 768px) {
+  html[data-theme="dark"], html[data-theme="dark"] body { background-attachment: scroll !important; }
+  html[data-theme="dark"] .main { box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.5); }
+}
