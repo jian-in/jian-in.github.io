@@ -1,0 +1,178 @@
+/* ═══════════════════════════════════════════════════════════════
+   Forgiving Blog — Cyberpunk Frame Layer（骨架层）
+   ───────────────────────────────────────────────────────────────
+   三层分工：
+     cyberpunk.css        配色与光
+     cyberpunk-fx.css     动效
+     cyberpunk-frame.css  形状语言（本文件）
+   加载顺序：本文件最后，以便覆盖 fx 层为渐变文字加的滤镜。
+
+   问题背景：前几版只换了"颜色与光"，布局骨架仍是原主题的柔性玻璃——
+   custom.css:19-21 的 24px 大圆角 + :22-24 的柔和扩散投影，与赛博朋克的
+   硬边／锐角／机械感相悖，所以霓虹再亮也还是"圆润的深色主题"。
+   本层把骨架硬边化：去圆角、斜切角、硬边描边、HUD 装饰、霓虹灯管标题。
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. 去圆角：柔和大圆角 → 近直角 ── */
+html[data-theme="dark"] {
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+}
+
+/* ── 2. 霓虹灯管标题：单色高饱和 + 多层辉光（替换渐变填充）──
+   渐变文字属扁平化语言；真霓虹是"一根灯管在发光"。 */
+html[data-theme="dark"] .home-hero h1,
+html[data-theme="dark"] .post-title {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: #eafcff;
+  filter: none;                 /* 覆盖 fx 层为渐变文字配的 drop-shadow */
+  text-shadow:
+    0 0 3px #ffffff,
+    0 0 9px #b8f7ff,
+    0 0 20px #00f0ff,
+    0 0 38px rgba(0, 240, 255, 0.80),
+    0 0 68px rgba(0, 240, 255, 0.45);
+}
+html[data-theme="dark"] .stat-number {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: #eafcff;
+  filter: none;
+  text-shadow:
+    0 0 3px #ffffff,
+    0 0 12px #00f0ff,
+    0 0 28px rgba(0, 240, 255, 0.75);
+}
+
+/* ── 3. 硬边描边：把"柔和浮起"换成"贴着发光的边框" ── */
+html[data-theme="dark"] .post-card {
+  border: 1px solid rgba(0, 240, 255, 0.30);
+}
+html[data-theme="dark"] .main {
+  border: 1px solid rgba(0, 240, 255, 0.32);
+}
+html[data-theme="dark"] .stat-item,
+html[data-theme="dark"] .footer-link-item {
+  border: 1px solid rgba(0, 240, 255, 0.22);
+}
+
+/* ── 4. HUD 角标：容器四角的 L 形括号（赛博朋克界面标志）── */
+html[data-theme="dark"] .main::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 30px; height: 30px;
+  border-top: 2px solid var(--cyber-cyan);
+  border-left: 2px solid var(--cyber-cyan);
+  opacity: 0.75;
+  pointer-events: none;
+}
+html[data-theme="dark"] .main::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 30px; height: 30px;
+  border-bottom: 2px solid var(--cyber-magenta);
+  border-right: 2px solid var(--cyber-magenta);
+  opacity: 0.75;
+  pointer-events: none;
+}
+/* header 顶部的刻度条 */
+html[data-theme="dark"] header::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg,
+    var(--cyber-cyan) 0 12px,
+    transparent 12px 22px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ── 5. 斜切角：赛博朋克标志性几何 —— 右上 + 左下切角 ── */
+html[data-theme="dark"] .skill-tag,
+html[data-theme="dark"] .post-card .card-tag,
+html[data-theme="dark"] .post-tags a,
+html[data-theme="dark"] .tags-cloud a,
+html[data-theme="dark"] .post-card .card-category {
+  border-radius: 0;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% 100%,
+    7px 100%,
+    0 calc(100% - 7px)
+  );
+}
+html[data-theme="dark"] .top-link {
+  border-radius: 0;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+/* ── 6. HUD 化小元素：等宽 + 大写 + 字距 ── */
+html[data-theme="dark"] .section-title {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.9rem;
+}
+html[data-theme="dark"] .post-card .card-meta,
+html[data-theme="dark"] .post-meta,
+html[data-theme="dark"] .breadcrumbs {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+html[data-theme="dark"] .stat-label {
+  letter-spacing: 0.18em;
+}
+html[data-theme="dark"] .post-card .card-link,
+html[data-theme="dark"] .view-more a {
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+/* ── 7. 代码 / 引用 / 目录：硬边 + 左侧霓虹竖线（终端感）── */
+html[data-theme="dark"] pre,
+html[data-theme="dark"] .highlight,
+html[data-theme="dark"] .post-content .highlight,
+html[data-theme="dark"] .chroma {
+  border-radius: 0;
+  border-left: 3px solid var(--cyber-cyan);
+}
+html[data-theme="dark"] .post-content blockquote {
+  border-radius: 0;
+  border-left-width: 4px;
+}
+html[data-theme="dark"] .toc,
+html[data-theme="dark"] details.toc {
+  border-radius: 0;
+  border-left: 3px solid rgba(0, 240, 255, 0.6);
+}
+html[data-theme="dark"] .post-content img,
+html[data-theme="dark"] .post-content table {
+  border-radius: 0;
+}
+
+/* ── 8. 图库 / 灯箱 ── */
+html[data-theme="dark"] .card-inner,
+html[data-theme="dark"] .gallery-card .card-border-flow,
+html[data-theme="dark"] .lightbox-img {
+  border-radius: 2px;
+}
+html[data-theme="dark"] .avatar-modal-img {
+  border-radius: 2px;
+}
