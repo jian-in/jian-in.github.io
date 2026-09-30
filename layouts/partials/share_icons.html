@@ -70,15 +70,16 @@
     {{- end }}
 
     <!-- WeChat Share (QR Code) -->
-    <li class="share-wechat" style="position:relative;display:inline-block;">
-        <a href="javascript:void(0)" aria-label="分享到微信" style="color:#07c160;cursor:pointer;">
+    <li class="share-wechat">
+        <button class="share-wechat-toggle" type="button" aria-label="生成微信分享二维码"
+                aria-expanded="false" aria-controls="wechatQRPopover" style="color:#07c160;">
             <svg viewBox="0 0 24 24" height="30px" width="30px" fill="currentColor">
                 <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05a6.127 6.127 0 01-.255-1.736c0-3.64 3.385-6.592 7.56-6.592.267 0 .526.022.788.044C16.727 4.842 13.074 2.188 8.691 2.188zm-2.79 3.91a1.069 1.069 0 11-.001 2.137 1.069 1.069 0 01.001-2.137zm5.237 0a1.069 1.069 0 110 2.137 1.069 1.069 0 010-2.137zM24 14.637c0-3.257-3.258-5.899-7.277-5.899-4.02 0-7.277 2.642-7.277 5.899 0 3.258 3.258 5.9 7.277 5.9.85 0 1.669-.128 2.432-.357a.699.699 0 01.584.08l1.55.909a.267.267 0 00.136.044.237.237 0 00.236-.241c0-.059-.023-.116-.039-.174l-.32-1.209a.478.478 0 01.174-.541C23.012 18.267 24 16.564 24 14.637zm-9.658-1.025a.867.867 0 110-1.733.867.867 0 010 1.733zm4.76 0a.867.867 0 110-1.733.867.867 0 010 1.733z"/>
             </svg>
-        </a>
-        <div class="wechat-qr" style="display:none;position:absolute;bottom:42px;left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:100;text-align:center;min-width:180px;">
-            <div style="font-size:12px;color:#666;margin-bottom:8px;font-weight:500;">微信扫码分享</div>
-            <img id="wechatQRImg" src="" alt="QR Code" style="width:150px;height:150px;border-radius:8px;">
+        </button>
+        <div id="wechatQRPopover" class="wechat-qr" hidden>
+            <div class="wechat-qr-label">微信扫码分享</div>
+            <img id="wechatQRImg" src="" alt="当前文章的微信分享二维码" width="150" height="150">
         </div>
     </li>
 
@@ -109,20 +110,32 @@
 (function(){
   var wechatBtn = document.querySelector('.share-wechat');
   if(!wechatBtn) return;
+  var toggle = wechatBtn.querySelector('.share-wechat-toggle');
   var qrDiv = wechatBtn.querySelector('.wechat-qr');
   var qrImg = document.getElementById('wechatQRImg');
   var pageUrl = '{{ $pageurl }}';
   var loaded = false;
 
-  wechatBtn.addEventListener('mouseenter', function(){
-    if(!loaded && qrImg){
+  function setOpen(open){
+    if(open && !loaded && qrImg){
       qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(pageUrl);
       loaded = true;
     }
-    if(qrDiv) qrDiv.style.display = 'block';
+    qrDiv.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+
+  toggle.addEventListener('click', function(){
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
   });
-  wechatBtn.addEventListener('mouseleave', function(){
-    if(qrDiv) qrDiv.style.display = 'none';
+  document.addEventListener('click', function(event){
+    if(!wechatBtn.contains(event.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true'){
+      setOpen(false);
+      toggle.focus();
+    }
   });
 })();
 </script>

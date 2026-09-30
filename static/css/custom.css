@@ -67,6 +67,7 @@ body::after {
 
 /* ── Main Content Container ── */
 .main {
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
@@ -185,6 +186,25 @@ header nav a:hover {
   z-index: 1;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   animation: fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hero-avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hero-avatar:focus-visible,
+.gallery-card:focus-visible,
+.share-buttons button:focus-visible,
+.gallery-lightbox button:focus-visible,
+.avatar-modal button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 4px;
 }
 
 .hero-avatar:hover {
@@ -219,6 +239,10 @@ header nav a:hover {
   position: absolute; top: 20px; right: 30px;
   font-size: 3rem; color: #fff;
   cursor: pointer; transition: color 0.2s; line-height: 1;
+  width: 52px; height: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 .avatar-modal-close:hover { color: var(--primary); }
 
@@ -1034,7 +1058,8 @@ details[open] summary { color: var(--primary); }
   margin: 0;
 }
 
-.share-buttons li a {
+.share-buttons li a,
+.share-buttons li button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1047,9 +1072,12 @@ details[open] summary { color: var(--primary); }
   color: var(--content);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  cursor: pointer;
 }
 
-.share-buttons li a:hover {
+.share-buttons li a:hover,
+.share-buttons li button:hover {
   transform: translateY(-3px) scale(1.08);
   box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
   border-color: var(--primary);
@@ -1057,13 +1085,38 @@ details[open] summary { color: var(--primary); }
   background: rgba(249, 115, 22, 0.06);
 }
 
-.share-buttons li a svg {
+.share-buttons li a svg,
+.share-buttons li button svg {
   transition: transform 0.3s;
 }
 
-.share-buttons li a:hover svg {
+.share-buttons li a:hover svg,
+.share-buttons li button:hover svg {
   transform: scale(1.1);
 }
+
+.share-wechat {
+  position: relative;
+  display: inline-block;
+}
+
+.wechat-qr {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  z-index: 100;
+  min-width: 180px;
+  padding: 12px;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.wechat-qr[hidden] { display: none; }
+.wechat-qr-label { margin-bottom: 8px; color: #666; font-size: 12px; font-weight: 500; }
+.wechat-qr img { display: block; width: 150px; height: 150px; border-radius: 6px; }
 
 /* ── Selection Color ── */
 ::selection {
@@ -1198,10 +1251,13 @@ html[data-theme="dark"] .hero-avatar {
 
 @media (max-width: 768px) {
   .main {
+    width: calc(100% - 2rem);
     padding: 1.5rem;
     margin: 1rem;
     border-radius: var(--radius-md);
   }
+
+  body, html { background-attachment: scroll !important; }
 
   .footer-links {
     grid-template-columns: repeat(3, 1fr);
@@ -1273,6 +1329,12 @@ html[data-theme="dark"] .hero-avatar {
   cursor: pointer;
   animation: fadeScaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   transform-style: preserve-3d;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: inherit;
 }
 
 .card-border-flow {
@@ -1571,4 +1633,13 @@ html[data-theme="dark"] .gallery-card:hover .card-border-flow {
   }
 
   .gallery-title { font-size: 1.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

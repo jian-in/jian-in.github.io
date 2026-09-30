@@ -101,10 +101,14 @@ hugo --minify
 
 ## 部署到 GitHub Pages
 
-1. 创建 GitHub 仓库（`用户名.github.io`）
-2. 将 `public/` 目录推送到仓库
-3. 在仓库 Settings → Pages 中开启
-4. 等待 GitHub 签发 HTTPS 证书
+这个博客使用 GitHub Actions 自动构建和部署源码：
+
+1. 创建 GitHub 仓库，并把 Hugo 源码推送到默认分支
+2. 在 `.github/workflows/deploy.yml` 中配置 Hugo 构建、Pages Artifact 上传和部署步骤
+3. 在仓库 `Settings → Pages` 中将部署来源设为 **GitHub Actions**
+4. 后续每次推送源码，工作流会运行 `hugo --minify --gc` 并发布 `public/`
+
+如果 PaperMod 以 Git submodule 管理，需要在 checkout 步骤启用 `submodules: recursive`；如果主题作为普通目录提交，则保持当前配置即可。
 
 ---
 

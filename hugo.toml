@@ -75,7 +75,7 @@ enableGitInfo = true
   disableThemeToggle = false
   DateFormat = '2006-01-02'
   env = 'production'
-  images = ['/favicon.svg']
+  images = ['/images/forgiving-og.png']
   comments = true
 
   [params.assets]

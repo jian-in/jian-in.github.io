@@ -6,8 +6,9 @@
 
 <div class="gallery-grid">
   {{ range $index, $item := hugo.Data.gallery }}
-  <div class="gallery-card" data-index="{{ $index }}"
-       style="{{ with $item.color }}--card-hue: {{ . }};{{ end }}animation-delay: {{ mul $index 0.1 }}s">
+  <button class="gallery-card" type="button" data-index="{{ $index }}"
+          aria-label="查看图片：{{ $item.title }}"
+          style="{{ with $item.color }}--card-hue: {{ . }};{{ end }}animation-delay: {{ mul $index 0.1 }}s">
     <div class="card-border-flow">
       <div class="card-inner">
         <div class="card-image-wrap">
@@ -22,7 +23,7 @@
         {{ end }}
       </div>
     </div>
-  </div>
+  </button>
   {{ end }}
 </div>
 
@@ -34,15 +35,21 @@
 {{ end }}
 
 <!-- Lightbox -->
-<div id="galleryLightbox" class="gallery-lightbox" onclick="closeLightbox()">
+<div id="galleryLightbox"
+     class="gallery-lightbox"
+     role="dialog"
+     aria-modal="true"
+     aria-label="图片预览"
+     aria-hidden="true"
+     onclick="handleLightboxBackdrop(event)">
   <div class="lightbox-backdrop"></div>
   <div class="lightbox-content">
     <img id="lightboxImg" class="lightbox-img" src="" alt="">
     <div id="lightboxCaption" class="lightbox-caption"></div>
   </div>
-  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-  <button class="lightbox-prev" onclick="navLightbox(event, -1)">&#8249;</button>
-  <button class="lightbox-next" onclick="navLightbox(event, 1)">&#8250;</button>
+  <button class="lightbox-close" type="button" aria-label="关闭图片预览" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-prev" type="button" aria-label="上一张图片" onclick="navLightbox(event, -1)">&#8249;</button>
+  <button class="lightbox-next" type="button" aria-label="下一张图片" onclick="navLightbox(event, 1)">&#8250;</button>
 </div>
 
 <script>
@@ -51,8 +58,10 @@
    ═══════════════════════════════════════════════ */
 document.querySelectorAll('.gallery-card').forEach(card => {
   const inner = card.querySelector('.card-border-flow');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   card.addEventListener('mousemove', e => {
+    if (reduceMotion) return;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -71,8 +80,7 @@ document.querySelectorAll('.gallery-card').forEach(card => {
   });
 
   card.addEventListener('click', e => {
-    if (e.target.closest('.card-info')) return;
-    const idx = parseInt(card.dataset.index);
+    const idx = parseInt(card.dataset.index, 10);
     openLightbox(idx);
   });
 });
@@ -82,6 +90,7 @@ document.querySelectorAll('.gallery-card').forEach(card => {
    ═══════════════════════════════════════════════ */
 const galleryData = {{ hugo.Data.gallery | jsonify | safeJS }};
 let currentIndex = 0;
+let lightboxReturnFocus = null;
 
 function openLightbox(idx) {
   currentIndex = idx;
@@ -89,24 +98,45 @@ function openLightbox(idx) {
   const lb = document.getElementById('galleryLightbox');
   const img = document.getElementById('lightboxImg');
   const cap = document.getElementById('lightboxCaption');
+  if (!lb.classList.contains('active')) lightboxReturnFocus = document.activeElement;
   img.src = item.image;
   img.alt = item.title || '';
-  cap.innerHTML = item.title
-    ? '<h3>' + item.title + '</h3>' + (item.desc ? '<p>' + item.desc + '</p>' : '')
-    : '';
+  cap.replaceChildren();
+  if (item.title) {
+    const title = document.createElement('h3');
+    title.textContent = item.title;
+    cap.appendChild(title);
+  }
+  if (item.desc) {
+    const description = document.createElement('p');
+    description.textContent = item.desc;
+    cap.appendChild(description);
+  }
   lb.classList.add('active');
+  lb.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  lb.querySelector('.lightbox-close').focus();
 }
 
 function closeLightbox() {
-  document.getElementById('galleryLightbox').classList.remove('active');
+  const lb = document.getElementById('galleryLightbox');
+  if (!lb.classList.contains('active')) return;
+  lb.classList.remove('active');
+  lb.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  if (lightboxReturnFocus) lightboxReturnFocus.focus();
 }
 
 function navLightbox(event, dir) {
-  event.stopPropagation();
+  if (event) event.stopPropagation();
   currentIndex = (currentIndex + dir + galleryData.length) % galleryData.length;
   openLightbox(currentIndex);
+}
+
+function handleLightboxBackdrop(event) {
+  if (event.target === event.currentTarget || event.target.classList.contains('lightbox-backdrop')) {
+    closeLightbox();
+  }
 }
 
 document.addEventListener('keydown', e => {
@@ -115,6 +145,18 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
   if (e.key === 'ArrowLeft') navLightbox(e, -1);
   if (e.key === 'ArrowRight') navLightbox(e, 1);
+  if (e.key === 'Tab') {
+    const controls = [...lb.querySelectorAll('button')];
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
 });
 </script>
 {{ end }}

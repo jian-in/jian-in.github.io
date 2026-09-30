@@ -1,13 +1,19 @@
 {{ define "main" }}
 <div class="home-hero">
-  <img class="hero-avatar"
-       src="{{ .Site.Params.avatar }}"
-       alt="{{ .Site.Title }}的头像"
-       width="120" height="120"
-       loading="lazy"
-       onclick="openAvatarModal(this.src)"
-       style="cursor:pointer"
-       title="点击查看大图">
+  <button id="avatarTrigger"
+          class="hero-avatar"
+          type="button"
+          aria-label="查看{{ .Site.Title }}的头像大图"
+          aria-haspopup="dialog"
+          aria-controls="avatarModal"
+          onclick="openAvatarModal(this.querySelector('img').src)">
+    <img class="hero-avatar-img"
+         src="{{ .Site.Params.avatar }}"
+         alt=""
+         width="120" height="120"
+         decoding="async"
+         fetchpriority="high">
+  </button>
   <h1>{{ .Site.Title }}</h1>
   <p>{{ .Site.Params.description }}</p>
   <div class="skill-tags">
@@ -82,22 +88,47 @@
 </div>
 
 <!-- Avatar Modal -->
-<div id="avatarModal" class="avatar-modal" onclick="closeAvatarModal()">
+<div id="avatarModal"
+     class="avatar-modal"
+     role="dialog"
+     aria-modal="true"
+     aria-label="头像大图"
+     aria-hidden="true"
+     onclick="handleAvatarBackdrop(event)">
   <img id="avatarModalImg" class="avatar-modal-img" src="" alt="头像大图">
-  <span class="avatar-modal-close">&times;</span>
+  <button id="avatarModalClose"
+          class="avatar-modal-close"
+          type="button"
+          aria-label="关闭头像大图"
+          onclick="closeAvatarModal()">&times;</button>
 </div>
 <script>
 function openAvatarModal(src){
-  document.getElementById('avatarModalImg').src=src;
-  document.getElementById('avatarModal').classList.add('active');
-  document.body.style.overflow='hidden';
+  const modal = document.getElementById('avatarModal');
+  document.getElementById('avatarModalImg').src = src;
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('avatarModalClose').focus();
 }
 function closeAvatarModal(){
-  document.getElementById('avatarModal').classList.remove('active');
-  document.body.style.overflow='';
+  const modal = document.getElementById('avatarModal');
+  if (!modal.classList.contains('active')) return;
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  document.getElementById('avatarTrigger').focus();
+}
+function handleAvatarBackdrop(event){
+  if (event.target === event.currentTarget) closeAvatarModal();
 }
 document.addEventListener('keydown',function(e){
-  if(e.key==='Escape') closeAvatarModal();
+  const modal = document.getElementById('avatarModal');
+  if (e.key === 'Escape' && modal.classList.contains('active')) closeAvatarModal();
+  if (e.key === 'Tab' && modal.classList.contains('active')) {
+    e.preventDefault();
+    document.getElementById('avatarModalClose').focus();
+  }
 });
 </script>
 {{ end }}
