@@ -1,36 +1,31 @@
 {{ define "main" }}
 <div class="gallery-header">
-  <h1 class="gallery-title rainbow-text">{{ .Title }}</h1>
-  <p class="gallery-subtitle">点击任意图片查看大图 · 移动鼠标感受3D效果</p>
+  <h1 class="gallery-title">{{ .Title }}</h1>
+  <p class="gallery-subtitle">随手贴在墙上的几张照片，点一下看大图</p>
 </div>
 
 <div class="gallery-grid">
   {{ range $index, $item := hugo.Data.gallery }}
   <button class="gallery-card" type="button" data-index="{{ $index }}"
           aria-label="查看图片：{{ $item.title }}"
-          style="{{ with $item.color }}--card-hue: {{ . }};{{ end }}animation-delay: {{ mul $index 0.1 }}s">
-    <div class="card-border-flow">
-      <div class="card-inner">
-        <div class="card-image-wrap">
-          <img class="card-image" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">
-          <div class="card-glow"></div>
-        </div>
-        {{ if or $item.title $item.desc }}
-        <div class="card-info">
-          {{ with $item.title }}<h3 class="card-title rainbow-text">{{ . }}</h3>{{ end }}
-          {{ with $item.desc }}<p class="card-desc">{{ . }}</p>{{ end }}
-        </div>
-        {{ end }}
-      </div>
+          style="animation-delay: {{ mul $index 0.08 }}s">
+    <div class="card-image-wrap">
+      <img class="card-image" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">
     </div>
+    {{ if or $item.title $item.desc }}
+    <div class="card-info">
+      {{ with $item.title }}<h3 class="card-title">{{ . }}</h3>{{ end }}
+      {{ with $item.desc }}<p class="card-desc">{{ . }}</p>{{ end }}
+    </div>
+    {{ end }}
   </button>
   {{ end }}
 </div>
 
 {{ if not hugo.Data.gallery }}
 <div class="gallery-empty">
-  <p>还没有图片呢喵~</p>
-  <p>编辑 <code>data/gallery.yaml</code> 添加你的第一张图片吧！</p>
+  <p>墙上还空着。</p>
+  <p>编辑 <code>data/gallery.yaml</code> 贴上第一张照片吧。</p>
 </div>
 {{ end }}
 
@@ -45,7 +40,7 @@
   <div class="lightbox-backdrop"></div>
   <div class="lightbox-content">
     <img id="lightboxImg" class="lightbox-img" src="" alt="">
-    <div id="lightboxCaption" class="lightbox-caption"></div>
+    <div id="lightboxCaption" class="lightbox-info"></div>
   </div>
   <button class="lightbox-close" type="button" aria-label="关闭图片预览" onclick="closeLightbox()">&times;</button>
   <button class="lightbox-prev" type="button" aria-label="上一张图片" onclick="navLightbox(event, -1)">&#8249;</button>
@@ -53,36 +48,8 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   3D Tilt Effect
-   ═══════════════════════════════════════════════ */
 document.querySelectorAll('.gallery-card').forEach(card => {
-  const inner = card.querySelector('.card-border-flow');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  card.addEventListener('mousemove', e => {
-    if (reduceMotion) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -12;
-    const rotateY = ((x - centerX) / centerX) * 12;
-
-    inner.style.transform =
-      `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03,1.03,1.03)`;
-  });
-
-  card.addEventListener('mouseleave', () => {
-    inner.style.transform =
-      'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
-  });
-
-  card.addEventListener('click', e => {
-    const idx = parseInt(card.dataset.index, 10);
-    openLightbox(idx);
-  });
+  card.addEventListener('click', () => openLightbox(parseInt(card.dataset.index, 10)));
 });
 
 /* ═══════════════════════════════════════════════

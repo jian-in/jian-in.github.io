@@ -1,5 +1,7 @@
 {{ define "main" }}
-<div class="home-hero">
+{{- $posts := where .Site.RegularPages "Section" "posts" }}
+
+<section class="home-hero">
   <button id="avatarTrigger"
           class="hero-avatar"
           type="button"
@@ -7,85 +9,76 @@
           aria-haspopup="dialog"
           aria-controls="avatarModal"
           onclick="openAvatarModal(this.querySelector('img').src)">
+    <span class="tape tape-avatar" aria-hidden="true"></span>
     <img class="hero-avatar-img"
          src="{{ .Site.Params.avatar }}"
          alt=""
-         width="120" height="120"
+         width="112" height="112"
          decoding="async"
          fetchpriority="high">
   </button>
-  <h1>{{ .Site.Title }}</h1>
-  <p>{{ .Site.Params.description }}</p>
-  <div class="skill-tags">
-    {{ range .Site.Params.skills }}
-    <span class="skill-tag">{{ . }}</span>
-    {{ end }}
+  <div class="hero-text">
+    <h1>{{ .Site.Title }}</h1>
+    <p class="hero-desc">{{ .Site.Params.description }}</p>
+    <ul class="skill-tags" aria-label="关键词">
+      {{- range .Site.Params.skills }}
+      <li class="skill-tag">{{ . }}</li>
+      {{- end }}
+    </ul>
+    <p class="hero-stats">
+      <span><b>{{ len $posts }}</b> 篇文章</span>
+      <span><b>{{ len .Site.Taxonomies.tags }}</b> 个标签</span>
+      <span><b>{{ len .Site.Taxonomies.categories }}</b> 个分类</span>
+    </p>
   </div>
-</div>
+</section>
 
-<div class="stats-section">
-  <div class="stat-item">
-    <div class="stat-number">{{ len (where .Site.RegularPages "Section" "posts") }}</div>
-    <div class="stat-label">篇文章</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">{{ len .Site.Taxonomies.tags }}</div>
-    <div class="stat-label">个标签</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">{{ len .Site.Taxonomies.categories }}</div>
-    <div class="stat-label">个分类</div>
-  </div>
-</div>
+{{- with hugo.Data.moments }}
+{{- $latest := index (sort . "date" "desc") 0 }}
+<section class="home-moment" aria-labelledby="homeMomentTitle">
+  <span class="tape tape-note" aria-hidden="true"></span>
+  <h2 id="homeMomentTitle" class="home-moment-label">
+    近况
+    <time datetime="{{ (time $latest.date).Format "2006-01-02T15:04:05Z07:00" }}">{{ (time $latest.date).Format "01·02" }}</time>
+  </h2>
+  <div class="home-moment-text">{{ $latest.text | markdownify }}</div>
+  <a class="home-moment-more" href="{{ "moments/" | relURL }}">全部动态 →</a>
+</section>
+{{- end }}
 
-<div class="section-title">最新文章</div>
-<div class="posts-grid">
-  {{ range (first 6 (where .Site.RegularPages "Section" "posts")) }}
-  <article class="post-card">
-    <div class="card-meta">
-      {{ with .Params.categories }}<span class="card-category">{{ index . 0 }}</span>{{ end }}
-      <span>{{ .Date.Format "2006-01-02" }}</span>
-    </div>
-    <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-    <div class="card-desc">{{ .Summary | plainify | truncate 120 }}</div>
-    {{ with .Params.tags }}
-    <div class="card-tags">
-      {{ range . }}<a class="card-tag" href="{{ "tags/" | absURL }}{{ . | urlize }}/">#{{ . }}</a>{{ end }}
-    </div>
-    {{ end }}
-    <a class="card-link" href="{{ .Permalink }}">阅读全文 &rarr;</a>
-  </article>
-  {{ end }}
-</div>
+<section aria-labelledby="latestTitle">
+  <h2 id="latestTitle" class="section-title">最新文章</h2>
+  <ol class="post-list">
+    {{- range first 6 $posts }}
+    <li class="post-row">
+      <time class="post-row-date" datetime="{{ .Date.Format "2006-01-02" }}">
+        <span class="d">{{ .Date.Format "02" }}</span>
+        <span class="ym">{{ .Date.Format "2006·01" }}</span>
+      </time>
+      <div class="post-row-body">
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="post-row-desc">{{ .Summary | plainify | truncate 90 }}</p>
+        <p class="post-row-meta">
+          {{- with .Params.categories }}<span class="post-row-cat">{{ index . 0 }}</span>{{ end }}
+          {{- range .Params.tags }}<a href="{{ "tags/" | relURL }}{{ . | urlize }}/">#{{ . }}</a>{{ end }}
+        </p>
+      </div>
+    </li>
+    {{- end }}
+  </ol>
+  <p class="view-more"><a href="{{ "posts/" | relURL }}">查看全部文章 →</a></p>
+</section>
 
-<div class="view-more">
-  <a href="{{ "posts/" | absURL }}">查看全部文章 &rarr;</a>
-</div>
-
-{{ with .Site.Taxonomies.tags }}
-<div class="section-title">标签</div>
-<div class="tags-cloud">
-  {{ range .ByCount }}<a href="{{ .Page.Permalink }}">#{{ .Page.Title }} ({{ .Count }})</a>{{ end }}
-</div>
-{{ end }}
-
-<div class="footer-links">
-  <a class="footer-link-item" href="{{ "posts/" | absURL }}">
-    <span class="link-icon">&#128196;</span>文章
-  </a>
-  <a class="footer-link-item" href="{{ "tags/" | absURL }}">
-    <span class="link-icon">&#127991;</span>标签
-  </a>
-  <a class="footer-link-item" href="{{ "categories/" | absURL }}">
-    <span class="link-icon">&#128194;</span>分类
-  </a>
-  <a class="footer-link-item" href="{{ "archives/" | absURL }}">
-    <span class="link-icon">&#128218;</span>归档
-  </a>
-  <a class="footer-link-item" href="{{ "about/" | absURL }}">
-    <span class="link-icon">&#128100;</span>关于
-  </a>
-</div>
+{{- with .Site.Taxonomies.tags }}
+<section aria-labelledby="tagsTitle">
+  <h2 id="tagsTitle" class="section-title">标签</h2>
+  <ul class="tags-cloud">
+    {{- range .ByCount }}
+    <li><a href="{{ .Page.RelPermalink }}">#{{ .Page.Title }}<sup>{{ .Count }}</sup></a></li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
 
 <!-- Avatar Modal -->
 <div id="avatarModal"

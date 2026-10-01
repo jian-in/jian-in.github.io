@@ -1,9 +1,24 @@
-<!-- Custom Head Extensions -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ "css/animations.css" | relURL }}">
+<!-- 纸感手帐主题 -->
+{{- /* 字体走 npmmirror（国内可达）：思源宋体做标题，霞鹜文楷做手写感点缀；都按 unicode-range 分片按需加载 */}}
+<link rel="preconnect" href="https://registry.npmmirror.com" crossorigin>
+<link rel="stylesheet" href="https://registry.npmmirror.com/@fontsource/noto-serif-sc/5.2.8/files/600.css">
+<link rel="stylesheet" href="https://registry.npmmirror.com/@fontsource/noto-serif-sc/5.2.8/files/700.css">
+<link rel="stylesheet" href="https://registry.npmmirror.com/lxgw-wenkai-screen-webfont/1.7.0/files/lxgwwenkaiscreen.css">
+<meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1b18" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
-<link rel="stylesheet" href="{{ "css/cyberpunk.css" | relURL }}">
-<link rel="stylesheet" href="{{ "css/cyberpunk-fx.css" | relURL }}">
-<link rel="stylesheet" href="{{ "css/cyberpunk-frame.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/paper-home.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/intro.css" | relURL }}">
+{{- /* 进站特效：每个会话只播一次，减少动态效果时跳过；在 head 里提前加 class，避免页面先闪一下 */}}
+<script>
+(function () {
+  try {
+    if (sessionStorage.getItem('intro-seen')) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('intro');
+  } catch (e) {}
+})();
+</script>
+{{- if .IsPage }}
+<link rel="stylesheet" href="{{ "css/paper-post.css" | relURL }}">
+{{- end }}

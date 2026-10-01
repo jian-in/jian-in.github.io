@@ -1,0 +1,54 @@
+{{- if and .IsPage (eq .Section "posts") }}
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+<script>
+(function () {
+  var bar = document.getElementById('readingProgress');
+  if (!bar) return;
+  var ticking = false;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(doc.scrollTop / max, 1) : 0) + ')';
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+</script>
+{{- end }}
+<div class="site-intro" id="siteIntro" aria-hidden="true" hidden>
+  <div class="intro-card">
+    <span class="tape"></span>
+    <svg class="intro-title" viewBox="0 0 340 80" role="presentation">
+      <text x="50%" y="60" text-anchor="middle">{{ site.Title }}</text>
+    </svg>
+    <div class="intro-line"></div>
+    <p class="intro-desc">{{ site.Params.description }}</p>
+  </div>
+  <div class="intro-skip">点一下直接进入</div>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var intro = document.getElementById('siteIntro');
+  if (!intro) return;
+  if (!root.classList.contains('intro')) { intro.remove(); return; }
+  intro.hidden = false;
+  try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
+
+  var done = false;
+  function leave() {
+    if (done) return;
+    done = true;
+    intro.classList.add('is-leaving');
+    root.classList.remove('intro');
+    window.removeEventListener('keydown', leave);
+    setTimeout(function () { intro.remove(); }, 600);
+  }
+  intro.addEventListener('click', leave);
+  window.addEventListener('keydown', leave);
+  setTimeout(leave, 2300);
+})();
+</script>

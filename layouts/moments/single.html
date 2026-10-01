@@ -1,0 +1,108 @@
+{{ define "main" }}
+{{- $moments := sort (hugo.Data.moments | default slice) "date" "desc" }}
+{{- $posts := where site.RegularPages "Section" "posts" }}
+
+<header class="page-header moments-header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}<p class="post-description">{{ . }}</p>{{ end }}
+</header>
+
+{{- /* 热力图数据：动态 + 文章的日期，交给前端按访客的“今天”渲染 */}}
+{{- $days := slice }}
+{{- range $moments }}{{ $days = $days | append ((time .date).Format "2006-01-02") }}{{ end }}
+{{- range $posts }}{{ $days = $days | append (.Date.Format "2006-01-02") }}{{ end }}
+
+<section class="heatmap-card" aria-labelledby="heatmapTitle">
+  <div class="heatmap-head">
+    <h2 id="heatmapTitle">最近半年</h2>
+    <p id="heatmapSummary" class="heatmap-summary"></p>
+  </div>
+  <div id="heatmap" class="heatmap" role="img" aria-label="最近半年的动态与文章热力图"></div>
+  <div class="heatmap-legend" aria-hidden="true">
+    少 <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i> 多
+  </div>
+</section>
+
+{{- if $moments }}
+<ol class="moments">
+  {{- $lastMonth := "" }}
+  {{- range $moments }}
+  {{- $t := time .date }}
+  {{- $month := $t.Format "2006 年 1 月" }}
+  {{- if ne $month $lastMonth }}
+  <li class="moment-month" aria-hidden="true">{{ $month }}</li>
+  {{- $lastMonth = $month }}
+  {{- end }}
+  <li class="moment">
+    <div class="moment-dot" aria-hidden="true"></div>
+    <article class="moment-card">
+      <header class="moment-meta">
+        <time datetime="{{ $t.Format "2006-01-02T15:04:05Z07:00" }}" title="{{ $t.Format "2006-01-02 15:04" }}">{{ $t.Format "01-02 15:04" }}</time>
+        {{- with .mood }}<span class="moment-mood">{{ . }}</span>{{ end }}
+      </header>
+      <div class="moment-text">{{ .text | markdownify }}</div>
+      {{- with .image }}
+      <a class="moment-image" href="{{ . }}" target="_blank" rel="noopener">
+        <img src="{{ . }}" alt="{{ $.Title }}配图：{{ $t.Format "2006-01-02" }}" loading="lazy">
+      </a>
+      {{- end }}
+    </article>
+  </li>
+  {{- end }}
+</ol>
+{{- else }}
+<p class="moments-empty">还没有动态，去 <code>data/moments.yaml</code> 写下第一条吧。</p>
+{{- end }}
+
+<script>
+(function () {
+  // 相对时间：3 分钟前 / 2 天前，超过 30 天保留原日期
+  var rtf = window.Intl && Intl.RelativeTimeFormat ? new Intl.RelativeTimeFormat('zh-CN', { numeric: 'auto' }) : null;
+  if (rtf) {
+    var now = Date.now();
+    document.querySelectorAll('.moment-meta time').forEach(function (el) {
+      var diff = (new Date(el.getAttribute('datetime')).getTime() - now) / 1000;
+      var abs = Math.abs(diff);
+      if (abs > 86400 * 30) return;
+      var text = abs < 3600 ? rtf.format(Math.round(diff / 60), 'minute')
+               : abs < 86400 ? rtf.format(Math.round(diff / 3600), 'hour')
+               : rtf.format(Math.round(diff / 86400), 'day');
+      el.textContent = text;
+    });
+  }
+
+  // 热力图：26 周 × 7 天，按周一对齐
+  var days = {{ $days | jsonify | safeJS }};
+  var counts = {};
+  days.forEach(function (d) { counts[d] = (counts[d] || 0) + 1; });
+
+  var box = document.getElementById('heatmap');
+  var WEEKS = 26;
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var start = new Date(today);
+  start.setDate(start.getDate() - ((today.getDay() + 6) % 7) - (WEEKS - 1) * 7);
+
+  function key(d) {
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
+  }
+
+  var total = 0, active = 0;
+  var frag = document.createDocumentFragment();
+  for (var cur = new Date(start); cur <= today; cur.setDate(cur.getDate() + 1)) {
+    var k = key(cur), n = counts[k] || 0;
+    var cell = document.createElement('i');
+    cell.className = 'l' + Math.min(n, 3);
+    cell.title = k + (n ? '：' + n + ' 条' : '：无');
+    frag.appendChild(cell);
+    total += n; if (n) active++;
+  }
+  box.appendChild(frag);
+  box.style.setProperty('--weeks', WEEKS);
+
+  var summary = '共 ' + total + ' 条记录，' + active + ' 天有更新';
+  document.getElementById('heatmapSummary').textContent = summary;
+  box.setAttribute('aria-label', '最近半年热力图，' + summary);
+})();
+</script>
+{{ end }}

@@ -1,0 +1,148 @@
+/* ═══════════════════════════════════════════════
+   Forgiving — 进站特效：纸片落下 · 手写站名 · 揭开
+   只在每次会话首次进入时播放，点击或按键可跳过
+   ═══════════════════════════════════════════════ */
+
+/* 遮罩还没解析到之前先盖住页面，避免内容闪一下；JS 出问题时 3s 后自己消失 */
+html.intro body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--theme);
+  animation: intro-cover-fallback 0.4s 3s forwards;
+  pointer-events: none;
+}
+html.intro body { overflow: hidden; }
+@keyframes intro-cover-fallback { to { opacity: 0; visibility: hidden; } }
+
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background-color: var(--theme);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  cursor: pointer;
+  transition: opacity 0.55s var(--ease), visibility 0.55s;
+}
+.site-intro.is-leaving { opacity: 0; visibility: hidden; }
+
+/* 便签纸 */
+.intro-card {
+  position: relative;
+  box-sizing: border-box;
+  max-width: calc(100vw - 3rem);
+  padding: 2.2rem 2.8rem 1.6rem;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 var(--border), 0 18px 36px -22px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  transform: rotate(-1.5deg);
+  animation: intro-drop 0.7s var(--ease) both;
+}
+.site-intro.is-leaving .intro-card {
+  transform: translateY(-28px) rotate(2deg) scale(0.97);
+  transition: transform 0.55s var(--ease);
+}
+@keyframes intro-drop {
+  from { opacity: 0; transform: translateY(-36px) rotate(-6deg); }
+  to   { opacity: 1; transform: rotate(-1.5deg); }
+}
+
+/* 胶带：稍晚一点“贴上” */
+.intro-card .tape {
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  animation: intro-tape 0.35s 0.45s var(--ease) both;
+}
+@keyframes intro-tape {
+  from { opacity: 0; transform: translateX(-50%) rotate(-3deg) scale(1.25); }
+  to   { opacity: 1; transform: translateX(-50%) rotate(-3deg) scale(1); }
+}
+
+/* 站名：先描边再上墨 */
+.intro-title {
+  display: block;
+  width: 340px;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.intro-title text {
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  fill: var(--ink);
+  fill-opacity: 0;
+  stroke: var(--ink);
+  stroke-width: 1.1;
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  animation:
+    intro-write 1.3s 0.35s cubic-bezier(0.55, 0.1, 0.35, 1) forwards,
+    intro-ink 0.5s 1.4s ease-out forwards;
+}
+@keyframes intro-write { to { stroke-dashoffset: 0; } }
+@keyframes intro-ink   { to { fill-opacity: 1; stroke-width: 0; } }
+
+/* 苔绿下划线 + 一句手写 */
+.intro-line {
+  height: 2px;
+  margin: 0.2rem auto 0.8rem;
+  width: 64%;
+  background: var(--moss);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: intro-line 0.6s 1.35s var(--ease) forwards;
+}
+@keyframes intro-line { to { transform: scaleX(1); } }
+
+.intro-desc {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 16px;
+  color: var(--secondary);
+  opacity: 0;
+  animation: intro-fade 0.6s 1.55s var(--ease) forwards;
+}
+.intro-skip {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 13px;
+  color: var(--secondary);
+  opacity: 0;
+  animation: intro-fade-dim 0.6s 0.9s forwards;
+}
+@keyframes intro-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes intro-fade-dim { to { opacity: 0.6; } }
+
+@media (max-width: 480px) {
+  .intro-card { padding: 1.8rem 1.4rem 1.3rem; }
+  .intro-desc { font-size: 15px; }
+}
+
+/* 系统开了“减少动态效果”：不播放（JS 那边也会直接跳过） */
+@media (prefers-reduced-motion: reduce) {
+  .site-intro, html.intro body::after { display: none; }
+  html.intro body { overflow: auto; }
+}
+
+/* 特效播放时首页的 rise 入场先暂停，揭开后再接着播 */
+html.intro .home-hero,
+html.intro .home-moment,
+html.intro .post-row,
+html.intro .moment,
+html.intro .gallery-card { animation-play-state: paused; }

@@ -21,6 +21,11 @@ enableGitInfo = true
     url = '/posts/'
     weight = 10
   [[menu.main]]
+    identifier = 'moments'
+    name = '动态'
+    url = '/moments/'
+    weight = 15
+  [[menu.main]]
     identifier = 'tags'
     name = '标签'
     url = '/tags/'
@@ -129,7 +134,7 @@ enableGitInfo = true
 
 [markup]
   [markup.highlight]
-    style = 'monokai'
+    style = 'rrt'
     lineNos = true
     codeFences = true
   [markup.goldmark]

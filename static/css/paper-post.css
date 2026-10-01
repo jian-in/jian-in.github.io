@@ -1,0 +1,233 @@
+/* ═══════════════════════════════════════════════
+   Forgiving — 纸感手帐 · 文章阅读层
+   ═══════════════════════════════════════════════ */
+
+.post-header { margin-top: 32px; }
+.post-title { font-size: 34px; line-height: 1.35; }
+.post-meta { font-size: 13px; margin-top: 10px; }
+
+/* 阅读进度：顶部一道苔绿细线 */
+.reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 60;
+  height: 2px;
+  width: 100%;
+  background: var(--moss);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* ── 目录 ── */
+details.toc,
+[data-theme="dark"] details.toc {
+  background: var(--entry);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+details.toc summary { padding: 0.5rem 1rem; color: var(--secondary); font-size: 14px; }
+details.toc .inner { margin: 0 1.6rem; font-size: 14px; }
+details.toc a { color: var(--content); }
+details.toc a:hover { color: var(--moss-text); }
+
+/* ── 正文 ── */
+.post-content {
+  font-size: 16.5px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  color: var(--content);
+}
+
+.post-content p { margin-bottom: 1.1em; }
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.45;
+  scroll-margin-top: 80px;
+}
+.post-content h2 {
+  font-size: 23px;
+  margin: 2.2em 0 0.8em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px dashed var(--border);
+}
+.post-content h3 { font-size: 19px; margin: 1.8em 0 0.6em; }
+.post-content h4 { font-size: 17px; margin: 1.5em 0 0.5em; }
+
+/* 标题前的小苔绿方块 */
+.post-content h2::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-right: 0.55em;
+  background: var(--moss);
+  border-radius: 1px;
+  transform: translateY(-0.2em) rotate(45deg);
+}
+
+.post-content a {
+  color: var(--moss-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--moss) 40%, transparent);
+  box-shadow: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.post-content a:hover { border-bottom-color: var(--moss); background: var(--moss-soft); }
+.post-content .anchor { border: 0; color: var(--secondary); }
+.post-content .anchor:hover { background: none; }
+
+.post-content strong { color: var(--ink); font-weight: 650; }
+.post-content mark { background: linear-gradient(transparent 55%, var(--moss-soft) 55%); color: inherit; padding: 0 2px; }
+
+.post-content ul,
+.post-content ol { padding-inline-start: 1.4em; }
+.post-content li { margin: 0.35em 0; }
+.post-content li::marker { color: var(--moss); }
+
+/* 引用：手写体便签 */
+.post-content blockquote {
+  position: relative;
+  margin: 1.6em 0;
+  padding: 0.9em 1.2em;
+  border: 0;
+  border-left: 3px solid var(--moss);
+  background: var(--entry);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--content);
+  font-family: var(--font-hand);
+  font-size: 17px;
+}
+.post-content blockquote p:last-child { margin-bottom: 0; }
+
+.post-content hr {
+  height: auto;
+  border: 0;
+  background: none;
+  text-align: center;
+  margin: 2.4em 0;
+}
+.post-content hr::after { content: '· · ·'; color: var(--secondary); letter-spacing: 0.6em; }
+
+.post-content img {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin: 1.2em auto;
+}
+
+/* ── 表格 ── */
+.post-content table {
+  border-collapse: collapse;
+  font-size: 14.5px;
+  margin: 1.4em 0;
+}
+.post-content table th {
+  background: var(--moss-soft);
+  color: var(--ink);
+  font-weight: 600;
+}
+.post-content table th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+
+/* ── 代码 ── */
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  color: var(--ink);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+.post-content pre code { padding: 12px 14px; font-size: 13.5px; line-height: 1.65; border-radius: 6px; }
+.post-content .highlight,
+.post-content pre {
+  border-radius: 6px;
+  overflow: hidden;
+}
+.post-content .highlight pre,
+.post-content > pre { background: var(--code-block-bg) !important; }
+.copy-code { background: rgba(255, 255, 255, 0.12); border-radius: 3px; font-size: 12px; }
+
+/* ── 文末 ── */
+.post-tags a {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--secondary);
+  line-height: 28px;
+  font-size: 13px;
+}
+.post-tags a::before { content: '#'; color: var(--moss); margin-right: 1px; }
+.post-tags a:hover { background: var(--moss-soft); border-color: var(--moss); color: var(--ink); }
+
+.paginav {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.paginav a:hover { background: var(--moss-soft); }
+.paginav .title { color: var(--moss-text); letter-spacing: 0.1em; }
+
+/* 分享按钮 */
+.share-buttons {
+  background: transparent;
+  border: 0;
+  border-top: 1px dashed var(--border);
+  border-radius: 0;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  margin: 1.2rem 0 0;
+  overflow: visible;
+}
+.share-buttons li { list-style: none; margin: 0; }
+.share-buttons li a,
+.share-buttons li button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  margin: 0 !important;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--secondary) !important;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.share-buttons li svg { width: 18px; height: 18px; }
+.share-buttons li a:hover,
+.share-buttons li button:hover { border-color: var(--moss); color: var(--moss) !important; background: var(--moss-soft); }
+
+.share-wechat { position: relative; display: inline-block; }
+.wechat-qr {
+  position: absolute;
+  bottom: 46px; left: 50%;
+  z-index: 100;
+  min-width: 176px;
+  padding: 12px;
+  transform: translateX(-50%);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--entry);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+.wechat-qr[hidden] { display: none; }
+.wechat-qr-label { margin-bottom: 8px; color: var(--secondary); font-size: 12px; }
+.wechat-qr img { display: block; width: 150px; height: 150px; margin: 0 auto; border-radius: 4px; background: #fff; }
+
+@media (max-width: 600px) {
+  .post-title { font-size: 27px; }
+  .post-content { font-size: 16px; line-height: 1.85; }
+  .post-content h2 { font-size: 21px; }
+}
