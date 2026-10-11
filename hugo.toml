@@ -73,14 +73,6 @@ enableGitInfo = true
   UseHugoToc = true
   ShowRssButtonInSectionTermList = true
   ShowAllPagesInArchive = true
-
-  # 访问统计（默认关闭；填上 ID 即自动启用，支持 umami 自建与 Google Analytics 二选一或同开）
-  [params.analytics]
-    # [params.analytics.umami]
-    #   src = 'https://你的umami域名/script.js'
-    #   id = '你的website-id'
-    [params.analytics.gtag]
-      id = ''
   ShowPageNums = true
   ShowFullTextinRSS = false
   hideFooter = false
@@ -90,6 +82,15 @@ enableGitInfo = true
   env = 'production'
   images = ['/images/forgiving-og.png']
   comments = true
+
+  # 访问统计（默认关闭；填上 ID 即自动启用，支持 umami 自建与 Google Analytics 二选一或同开）
+  # 注意：子表必须放在 [params] 所有散键之后，否则会截断后续键的归属
+  [params.analytics]
+    # [params.analytics.umami]
+    #   src = 'https://你的umami域名/script.js'
+    #   id = '你的website-id'
+    [params.analytics.gtag]
+      id = ''
 
   [params.assets]
     favicon = 'favicon.svg'
