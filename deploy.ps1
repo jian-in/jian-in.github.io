@@ -6,10 +6,11 @@ $env:PYTHONIOENCODING='utf-8'
 
 Write-Host "=== Forgiving Blog 本地构建 ===" -ForegroundColor Cyan
 
-$blogDir = 'c:\Users\jianbo\Desktop\my-blog'
+$blogDir = $PSScriptRoot
 Set-Location $blogDir
-$env:TEMP='c:\Users\jianbo\hugo-cache'
-$env:TMP='c:\Users\jianbo\hugo-cache'
+$env:TEMP = Join-Path $blogDir '.hugo-cache'
+$env:TMP = $env:TEMP
+if (-not (Test-Path $env:TEMP)) { New-Item -ItemType Directory -Path $env:TEMP | Out-Null }
 
 # 1. 构建 Hugo
 Write-Host "`n[1/2] 构建 Hugo..." -ForegroundColor Yellow

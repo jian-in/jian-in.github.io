@@ -1,6 +1,6 @@
 ---
 title: "Hugo 博客踩坑：submodule 导致 GitHub Actions 构建失败"
-date: 2026-06-21
+date: 2026-06-21T12:00:00+08:00
 draft: false
 tags: ["Hugo", "踩坑", "GitHub Actions"]
 categories: ["技术"]

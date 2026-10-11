@@ -1,6 +1,9 @@
 ---
 title: "挑战之前，也想说一句爱你们"
-date: 2026-06-21
+date: 2026-06-21T12:00:00+08:00
+slug: "before-the-challenge"
+aliases:
+  - "/posts/神奇的/"
 draft: false
 tags: ["考试", "随笔"]
 categories: ["生活"]

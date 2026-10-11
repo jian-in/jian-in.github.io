@@ -1,0 +1,22 @@
+{{/* 访问统计：默认关闭；hugo.toml 里 params.analytics 配置后才输出 */}}
+{{- with .Site.Params.analytics }}
+
+{{- with .umami }}
+{{- if and .src .id }}
+<script defer src="{{ .src }}" data-website-id="{{ .id }}"></script>
+{{- end }}
+{{- end }}
+
+{{- with .gtag }}
+{{- if .id }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ .id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ .id }}');
+</script>
+{{- end }}
+{{- end }}
+
+{{- end }}
